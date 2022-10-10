@@ -1,9 +1,28 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+
+group = 'com.csh.util'
+version = '1.0'
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.csh.util'
+                artifactId = 'kc-util'
+                version = '1.0'
+            }
+        }
+    }
+}
 
 android {
     compileSdk 32
