@@ -24,6 +24,11 @@ afterEvaluate {
     }
 }
 
+afterEvaluate {
+    generateReleaseBuildConfig.enabled = false
+    generateDebugBuildConfig.enabled =false
+}
+
 android {
     compileSdk 32
 
