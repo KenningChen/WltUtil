@@ -25,7 +25,8 @@ import java.lang.annotation.RetentionPolicy;
  * <p>
  * author : created by shaohua.chen on 2021/2/23 11:37 AM
  */
-public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder implements IEditListenerConfiger, ILoadOverConfiger {
+public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder implements IEditListenerConfiger,
+        ILoadOverConfiger {
     View itemView;
     SparseArray<View> views;//存放itemview中的子view
     public BaseRecyclerViewHolder(@NonNull View itemView) {
