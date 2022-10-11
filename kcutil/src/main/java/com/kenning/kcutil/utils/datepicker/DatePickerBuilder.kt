@@ -48,6 +48,13 @@ class DatePickerBuilder {
 
     var requestCode = -1
 
+    var title = "开始日期"
+
+    fun setDateTitle(title: String): DatePickerBuilder {
+        this.title = title
+        return this
+    }
+
     /**
      * 开始时间
      */
@@ -105,6 +112,7 @@ class DatePickerBuilder {
         val bundle = Bundle()
         bundle.putString("start", beginDate)
         bundle.putString("end", endDate)
+        bundle.putString("title", title)
         bundle.putBoolean("isSingleDate", isSingleDate)
 //        bundle.putFloat("alpha",alpha)
 //        bundle.putString("location",location.name)
@@ -131,6 +139,7 @@ class DatePickerBuilder {
         val bundle = Bundle()
         bundle.putString("start", beginDate)
         bundle.putString("end", endDate)
+        bundle.putString("title", title)
         bundle.putBoolean("isSingleDate", isSingleDate)
 //        bundle.putFloat("alpha",alpha)
 //        bundle.putString("location",location.name)
