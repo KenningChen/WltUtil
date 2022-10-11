@@ -144,14 +144,16 @@ open class EasyDialog(private var context: Context) {
         return this
     }
 
-    /**设置不再提示*/
-    fun withPrompt(index: Int = 0): EasyDialog {
+    /**设置不再提示
+     * @param extendKey 扩展的key,存在相同key的时候用来区分用的
+     * */
+    fun withPrompt(index: Int = 0, extendKey: String = ""): EasyDialog {
         reSetDefault()
         promptEventIndex = index
         if (modes == null)
             promptEventIndex = -1
         this.Prompt = true
-        tiShiKey = (context as Activity).localClassName
+        tiShiKey = "${(context as Activity).localClassName}$extendKey"
         return this
     }
 
