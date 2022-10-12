@@ -53,12 +53,12 @@ object ScreenUtil {
 
 
 }
-//
-//fun View.getLocationWidth():Int{
-//    val location = intArrayOf(0,0)
-//    this.getLocationOnScreen(location)
-//    return location[0]
-//}
+
+fun View.getLocationWidth():Int{
+    val location = intArrayOf(0,0)
+    this.getLocationOnScreen(location)
+    return location[0]
+}
 
 fun View.getLocationHeight():Int{
     val globalRect = Rect()
