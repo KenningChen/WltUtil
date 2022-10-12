@@ -1,6 +1,7 @@
 package com.kenning.kcutil.utils.other
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
 import com.kenning.kcutil.KCUtil
@@ -30,6 +31,10 @@ object ScreenUtil {
     fun px2dip(pxValue: Float): Int {
         val scale = KCUtil.application?.resources?.displayMetrics?.density?:-1f
         return (pxValue / scale + 0.5f).toInt()
+    }
+
+    fun dp2px(dpValue: Float): Float {
+        return (0.5f + dpValue * Resources.getSystem().displayMetrics.density)
     }
 
     /**
