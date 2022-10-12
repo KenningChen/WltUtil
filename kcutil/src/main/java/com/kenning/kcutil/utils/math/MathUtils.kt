@@ -1,6 +1,7 @@
 package com.kenning.kcutil.utils.math
 
 import android.text.Editable
+import android.widget.EditText
 import java.math.BigDecimal
 import java.util.regex.Pattern
 
@@ -275,6 +276,20 @@ fun Editable?.ROUND_UP(point:Int):Unit{
         if (str.substring(str.indexOf(".") + 1, str.length).length > point) {
             this?.clear()
             this?.append(str.substring(0, str.indexOf(".") + 1 + point))
+        }
+    }
+}
+
+fun EditText?.ROUND_UP(point:Int):Unit{
+    if (this.toString().startsWith(".")) {
+        this?.setText("0.")
+        this?.setSelection(this.text.toString().length)
+    }
+    var str = this?.text.toString()
+    if (str.contains(".")) {
+        if (str.substring(str.indexOf(".") + 1, str.length).length > point) {
+            this?.setText(str.substring(0, str.indexOf(".") + 1 + point))
+            this?.setSelection(this.text.toString().length)
         }
     }
 }
