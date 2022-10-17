@@ -1,12 +1,20 @@
 package com.kenning.kcutil
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import com.kenning.base.BaseActivity
 import com.kenning.kcutil.databinding.ActivityMainBinding
 import com.kenning.kcutil.utils.date.DateExtendUtil
 import com.kenning.kcutil.utils.datepicker.DatePickerBuilder
 import com.kenning.kcutil.utils.datepicker.IPickerListener
+import com.kenning.kcutil.utils.dialog.easydialog.EasyDialog
 import com.reduxdemo.ReduxTestAct
 
 class MainActivity : BaseActivity(), IPickerListener {
@@ -37,7 +45,8 @@ class MainActivity : BaseActivity(), IPickerListener {
 //                .setRequestCode(111)
 ////                .setLoaction(PickerControl.ShowLocation.BOTTOM)
 //                .start(R.id.fcvMain)
-            startActivity(Intent(this, ReduxTestAct::class.java))
+//            startActivity(Intent(this, ReduxTestAct::class.java))
+            EasyDialog(this).setContentMsg(CMApiWarnToast(this)).build()
         }
     }
 
@@ -77,4 +86,65 @@ class MainActivity : BaseActivity(), IPickerListener {
         binding.tag11.text = start
     }
 
+}
+
+fun CMApiWarnToast(context: Activity/*, clazz: Class<*>*/): SpannableStringBuilder {
+    val mMsg2 = "检测到您对接的版本为财贸21.5及以上，请确保已填写管家婆【应用中心】-【移动管理】-【服务器设置】中的管家婆地址信息。否则，APP功能将无法正常使用。\n点击查看设置说明"
+
+    val style = SpannableStringBuilder()
+    style.append(mMsg2)
+
+    val foregroundColorSpan3 =
+        ForegroundColorSpan(
+            ResourcesCompat.getColor(
+                context.resources,
+                R.color.colorPrimary, null
+            )
+        )
+    style.setSpan(
+        foregroundColorSpan3,
+        0,
+        mMsg2.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    val agreement = "点击查看设置说明"
+//    // 设置部分文字点击事件
+//    val clickableSpan: ClickableSpan = object : ClickableSpan() {
+//        override fun onClick(widget: View) {
+////                if (clazz != null) {
+//            val intent = Intent(context, clazz)
+//            val bundle = Bundle()
+//            bundle.putString(
+//                "url",
+//                "http://help.wltrj.com/wltty/App/Api/财贸API对接说明.html"
+//            )
+//            bundle.putString("name", "财贸API对接说明")
+//            intent.putExtras(bundle)
+//            context.startActivity(intent)
+////                }
+//        }
+//    }
+//    style.setSpan(
+//        clickableSpan,
+//        mMsg2.indexOf(agreement),
+//        mMsg2.indexOf(agreement) + agreement.length,
+//        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//    )
+
+    val foregroundColorSpan = ForegroundColorSpan(
+        ResourcesCompat.getColor(
+            context.resources,
+            R.color.colorAccent,
+            null
+        )
+    )
+    style.setSpan(
+        foregroundColorSpan,
+        mMsg2.indexOf(agreement),
+        mMsg2.indexOf(agreement) + agreement.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    return style
 }
