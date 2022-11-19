@@ -15,9 +15,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.kenning.kcutil.R
-import com.kenning.kcutil.databinding.EasydialogBinding
 import com.kenning.kcutil.utils.math.toInt_
 import com.kenning.kcutil.utils.other.ScreenUtil
 import com.kenning.kcutil.utils.other.getColorResource
@@ -25,6 +23,7 @@ import com.kenning.kcutil.utils.recyclerviewextend.BaseRecyclerViewHolder
 import com.kenning.kcutil.utils.recyclerviewextend.RecycleViewDivider
 import com.kenning.kcutil.widget.SwitchImageView
 import com.kenning.kcutil.widget.basicview.BackGroundTextView
+import kotlinx.android.synthetic.main.easydialog.*
 
 /**
  * Description :
@@ -39,10 +38,9 @@ class BaseDialog : Dialog {
 
     private var adapter: RecyclerView.Adapter<*>? = null
 
-
     /**提示内容*/
     private var msg = ""
-    private var spanned : Spanned?=null
+    private var spanned: Spanned? = null
 
     private var Prompt = false
 
@@ -58,7 +56,7 @@ class BaseDialog : Dialog {
 
     private var strList = arrayOf<String?>()
 
-    private var itemClick:((Int)->Unit)?=null
+    private var itemClick: ((Int) -> Unit)? = null
 
     /**图片显示 默认不显示*/
     private var showPicture = false
@@ -75,14 +73,14 @@ class BaseDialog : Dialog {
         mContext: Context,
         title: String,
         strList: Array<String?>,
-        gravity:Int,
-        cancel:Boolean,
-        keyCancelAble:Boolean,
-        hasButtons:Boolean,
-        hasTitle:Boolean,
-        hideTitleLine:Boolean,
-        hideAdapterLine:Boolean,
-        itemClick:(Int)->Unit
+        gravity: Int,
+        cancel: Boolean,
+        keyCancelAble: Boolean,
+        hasButtons: Boolean,
+        hasTitle: Boolean,
+        hideTitleLine: Boolean,
+        hideAdapterLine: Boolean,
+        itemClick: (Int) -> Unit
     ) : super(mContext, R.style.commom_dialog) {
         this.title = title
         this.strList = strList
@@ -101,12 +99,12 @@ class BaseDialog : Dialog {
         mContext: Context,
         title: String,
         adapter: RecyclerView.Adapter<*>,
-        cancel:Boolean,
-        keyCancelAble:Boolean,
-        hasButtons:Boolean,
-        hasTitle:Boolean,
-        hideTitleLine:Boolean,
-        hideAdapterLine:Boolean
+        cancel: Boolean,
+        keyCancelAble: Boolean,
+        hasButtons: Boolean,
+        hasTitle: Boolean,
+        hideTitleLine: Boolean,
+        hideAdapterLine: Boolean
     ) : super(mContext, R.style.commom_dialog) {
         this.title = title
         this.adapter = adapter
@@ -123,13 +121,13 @@ class BaseDialog : Dialog {
         mContext: Context,
         title: String,
         msg: String,
-        gravity:Int,
-        cancel:Boolean,
-        keyCancelAble:Boolean,
-        hasButtons:Boolean,
-        hasTitle:Boolean,
-        hideTitleLine:Boolean,
-        hideAdapterLine:Boolean
+        gravity: Int,
+        cancel: Boolean,
+        keyCancelAble: Boolean,
+        hasButtons: Boolean,
+        hasTitle: Boolean,
+        hideTitleLine: Boolean,
+        hideAdapterLine: Boolean
     ) : super(mContext, R.style.commom_dialog) {
         this.title = title
         this.msg = msg
@@ -147,14 +145,14 @@ class BaseDialog : Dialog {
         mContext: Context,
         title: String,
         spanned: Spanned,
-        gravity:Int,
-        cancel:Boolean,
-        keyCancelAble:Boolean,
-        hasButtons:Boolean,
-        hasTitle:Boolean,
-        hideTitleLine:Boolean,
-        hideAdapterLine:Boolean,
-        showPicture:Boolean = false
+        gravity: Int,
+        cancel: Boolean,
+        keyCancelAble: Boolean,
+        hasButtons: Boolean,
+        hasTitle: Boolean,
+        hideTitleLine: Boolean,
+        hideAdapterLine: Boolean,
+        showPicture: Boolean = false
     ) : super(mContext, R.style.commom_dialog) {
         this.title = title
         this.spanned = spanned
@@ -170,39 +168,36 @@ class BaseDialog : Dialog {
     }
 
 
-
     private var title_textcolor = R.color.color_333333
     private var title_backgroundcolor = R.color.white
 
     private var promptEventIndex = -1
 
-    lateinit var binding: EasydialogBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=EasydialogBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.easydialog)
         setCanceledOnTouchOutside(cancel)
 
-        binding.tvDialogName.setEachCornerRadius(tools.radius(),tools.radius(),0,0)
-        binding.bottomview.setEachCornerRadius(0,0,tools.radius(),tools.radius())
-
-        if (!hasTitle){
-            binding.topView.visibility = View.VISIBLE
-            binding.titleline.visibility = View.GONE
-            binding.layouttitle.visibility = View.GONE
+        if (!hasTitle) {
+            topView.visibility = View.VISIBLE
+            titleline.visibility = View.GONE
+            layouttitle.visibility = View.GONE
         }
 
-        if (hideTitleLine){
-            binding.titleline.visibility = View.GONE
+        if (hideTitleLine) {
+            titleline.visibility = View.GONE
         }
 
-        binding.tvDialogName.setTextColor(getColorResource(title_textcolor))
-        binding.tvDialogName.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
-        binding.tvDialogName.text = title
-        if (showPicture){
-            binding.picture.visibility = View.VISIBLE
+
+        tvDialogName.setTextColor(getColorResource(title_textcolor))
+        tvDialogName.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
+        tvDialogName.setEachCornerRadius(tools.radius(), tools.radius(), 0, 0)
+        bottomview.setEachCornerRadius(0, 0, tools.radius(), tools.radius())
+        layouttitle.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
+        if (showPicture) {
+            picture.visibility = View.VISIBLE
         }
+        (findViewById<View>(R.id.tvDialogName) as TextView).text = title
 
         val params = window!!.attributes
         params.width = tools.dialogWidth()
@@ -221,7 +216,7 @@ class BaseDialog : Dialog {
                         tools.recycleViewDividerRight()
                     )
                 )
-        } else if (strList.isNotEmpty()){
+        } else if (strList.isNotEmpty()) {
             adapter = StringListAdapter(strList)
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).adapter = adapter
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).addItemDecoration(
@@ -234,8 +229,8 @@ class BaseDialog : Dialog {
                 )
             )
         } else {
-            binding.titleline.visibility = View.GONE
-            adapter = StringAdapter(msg)
+            titleline.visibility = View.GONE
+            adapter = StringAdapter(msg, spanned)
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).adapter = adapter
         }
 
@@ -265,16 +260,16 @@ class BaseDialog : Dialog {
     private var modes: Array<out ButtonMode>? = null
 
     /**设置底部按钮*/
-    fun setButtonMode(vararg modes: ButtonMode,option:Int=0): BaseDialog {
+    fun setButtonMode(vararg modes: ButtonMode): BaseDialog {
 //        this.modes = modes
 //        return this
-        return setButtonMode(index = -1,prompt = false, modes = modes)
+        return setButtonMode(index = -1, prompt = false, modes = modes)
     }
 
     /**是否带提示
      * @param effectButton 使 `下次不再提示` 等check事件生效的控件
      * */
-    fun setButtonMode(index:Int,prompt: Boolean, vararg modes: ButtonMode): BaseDialog {
+    fun setButtonMode(index: Int, prompt: Boolean, vararg modes: ButtonMode): BaseDialog {
         if (adapter == null) {
             this.Prompt = prompt
             tiShiKey = (mContext as Activity).localClassName
@@ -286,8 +281,8 @@ class BaseDialog : Dialog {
 
     /**绘制底部功能按钮*/
     private fun setBottomLayout(modes: Array<out ButtonMode>? = null) {
-        binding.layoutButton.removeAllViews()
-        binding.layoutButton.orientation = tools.bottomButtonOption
+        layoutButton.removeAllViews()
+        layoutButton.orientation = tools.bottomButtonOption
         if (modes != null && modes.isNotEmpty()) {
             var index = 0
             for (item in modes) {
@@ -321,11 +316,11 @@ class BaseDialog : Dialog {
                             tools.radius()
                         )
                     }
-                }else{//纵向排列
+                } else {
                     params = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, tools.buttonHeight()
                     )
-                    if(modes.size - 1 == index){
+                    if (modes.size - 1 == index) {
                         button.setEachCornerRadius(
                             0,
                             0,
@@ -340,30 +335,30 @@ class BaseDialog : Dialog {
                     val params: LinearLayout.LayoutParams =
                         if (tools.bottomButtonOption == 0) {
                             LinearLayout.LayoutParams(
-                                ScreenUtil.dip2px(1f),LinearLayout.LayoutParams.MATCH_PARENT
+                                ScreenUtil.dip2px(1f), LinearLayout.LayoutParams.MATCH_PARENT
                             )
-                        }else{
+                        } else {
                             LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,ScreenUtil.dip2px(1f)
+                                LinearLayout.LayoutParams.MATCH_PARENT, ScreenUtil.dip2px(1f)
                             )
                         }
                     textview.setBackgroundColor(getColorResource(R.color.color_EAEEEF))
                     textview.layoutParams = params
-                    binding.layoutButton.addView(textview)
+                    layoutButton.addView(textview)
                 }
 
                 button.text = item.text
-                button.setOnClickListener{
+                button.setOnClickListener {
                     if (Prompt && promptEventIndex == it.tag.toInt_()) {
                         tools.setPreferences(context, "EasyDialogTiShi", tiShiKey, isCheckNoTishi)
                     }
-                    item.click?.invoke(this)?:dismiss()
+                    item.click?.invoke(this) ?: dismiss()
                 }
                 button.setTextColor(getColorResource(item.textcolor))
                 button.setNormalBackgroundColor(getColorResource(item.backgroundcolor))
                 button.layoutParams = params
 
-                binding.layoutButton.addView(button)
+                layoutButton.addView(button)
 
                 index++
             }
@@ -393,7 +388,7 @@ class BaseDialog : Dialog {
                 }
                 dismiss()
             }
-            binding.layoutButton.addView(button)
+            layoutButton.addView(button)
         }
     }
 
@@ -406,19 +401,19 @@ class BaseDialog : Dialog {
             } else {
                 setBottomLayout(modes)
             }
-        }else{
-            binding.line.visibility = View.GONE
-            binding.layoutButton.visibility = View.GONE
-            binding.bottomview.visibility = View.VISIBLE
-            val param =
-                binding.bottomview.layoutParams.apply { height = tools.radius() }
-            binding.bottomview.layoutParams = param
+        } else {
+            line.visibility = View.GONE
+            layoutButton.visibility = View.GONE
+            bottomview.visibility = View.VISIBLE
+            val param = bottomview.layoutParams.apply { height = tools.radius() }
+            bottomview.layoutParams = param
         }
     }
 
     var state = true
 
-    inner class StringAdapter(var string: String,var spanned: Spanned?=null) : RecyclerView.Adapter<BaseRecyclerViewHolder>() {
+    inner class StringAdapter(var string: String, var spanned: Spanned? = null) :
+        RecyclerView.Adapter<BaseRecyclerViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder {
             return if (Prompt) {
                 BaseRecyclerViewHolder.getHolder(
@@ -432,21 +427,21 @@ class BaseDialog : Dialog {
         }
 
         override fun onBindViewHolder(holder: BaseRecyclerViewHolder, position: Int) {
-            if (spanned!=null){
+            if (spanned != null) {
                 holder.setText(R.id.tvMsg, spanned)
                 (holder.getView<TextView>(R.id.tvMsg)).apply {
                     movementMethod = LinkMovementMethod.getInstance()
-                    highlightColor = ResourcesCompat.getColor(mContext!!.resources,R.color
-                        .transparent,null)
+                    highlightColor =
+                        ResourcesCompat.getColor(mContext!!.resources, R.color.transparent, null)
                 }
-            }else {
+            } else {
                 holder.setText(R.id.tvMsg, string)
             }
             val layoutParams = holder.getView<TextView>(R.id.tvMsg).layoutParams
-            if(mGravity == Gravity.LEFT){
+            if (mGravity == Gravity.LEFT) {
                 layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
                 holder.getView<TextView>(R.id.tvMsg).layoutParams = layoutParams
-            }else if (mGravity == Gravity.RIGHT){
+            } else if (mGravity == Gravity.RIGHT) {
                 layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
                 holder.getView<TextView>(R.id.tvMsg).layoutParams = layoutParams
                 holder.getView<TextView>(R.id.tvMsg).gravity = Gravity.RIGHT
@@ -467,16 +462,16 @@ class BaseDialog : Dialog {
 
     }
 
-    inner class StringListAdapter(var list: Array<String?>): RecyclerView
-    .Adapter<BaseRecyclerViewHolder>(){
+    inner class StringListAdapter(var list: Array<String?>) :
+        RecyclerView.Adapter<BaseRecyclerViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder {
             return BaseRecyclerViewHolder.getHolder(parent.context, parent, R.layout.diaog_strlist)
         }
 
         override fun onBindViewHolder(holder: BaseRecyclerViewHolder, position: Int) {
-            holder.setText(R.id.tvMsg, list[position])
+            holder.setText(R.id.tvMsg, list[position] ?: "")
             holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
-            holder.setOnclickListioner(R.id.tvMsg){
+            holder.setOnclickListioner(R.id.tvMsg) {
                 itemClick?.invoke(holder.adapterPosition)
                 dismiss()
             }
@@ -491,7 +486,7 @@ class BaseDialog : Dialog {
     var tools = DialogTools()
 
     override fun onBackPressed() {
-        if(keyCancelAble)
+        if (keyCancelAble)
             super.onBackPressed()
     }
 }
