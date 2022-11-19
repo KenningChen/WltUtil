@@ -12,36 +12,50 @@ import com.kenning.kcutil.utils.other.ScreenUtil
  */
 class DialogTools {
 
+    var dialogWidthPre = 80
+    var dialogMaxHeightPre = 60
+    var botteomButtonHeight = 40f
+
+    /**设置底部操作按钮的排列方式
+     *
+     * 0 横向
+     *
+     * 1 纵向
+     * */
+    var bottomButtonOption = 0
+
     /**
      * 对话框宽度
      * -1为内部默认值
      */
-    var dialogWidth = (ScreenUtil.getScreenWidth()*0.9).toInt_()
+    fun dialogWidth() : Int = (ScreenUtil.getScreenWidth()*dialogWidthPre*0.01).toInt_()
+
+    fun dialogMaxHeight() : Int = (ScreenUtil.getScreenHeight()*dialogMaxHeightPre*0.01).toInt_()
 
     /**
      * Recyclerview适配器的item之间的高度
      */
-    var recycleViewDividerHeight = ScreenUtil.dip2px(1f)
+    fun recycleViewDividerHeight():Int = ScreenUtil.dip2px(1f)
 
     /**
      * Recyclerview分割线距离左边的距离
      */
-    var recycleViewDividerLeft = ScreenUtil.dip2px(10f)
+    fun recycleViewDividerLeft():Int = ScreenUtil.dip2px(10f)
 
     /**
      * Recyclerview分割线距离右边的距离
      */
-    var recycleViewDividerRight = ScreenUtil.dip2px(10f)
+    fun recycleViewDividerRight():Int = ScreenUtil.dip2px(10f)
 
     /**
      * 底部按钮高度
      */
-    var buttonHeight = ScreenUtil.dip2px(40f)
+    fun buttonHeight():Int = ScreenUtil.dip2px(botteomButtonHeight)
 
     /**
      * 控件各个边角的圆半径
      */
-    var radius = ScreenUtil.dip2px(10f)
+    fun radius():Int = ScreenUtil.dip2px(6f)
 
     /**
      * 设置本地临时存储数据

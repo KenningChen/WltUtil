@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.Spanned
 import android.view.Gravity
 import androidx.annotation.ColorRes
+import androidx.annotation.IntRange
 import androidx.recyclerview.widget.RecyclerView
 import com.kenning.kcutil.R
 
@@ -57,7 +58,7 @@ open class EasyDialog(private var context: Context) {
 
     private var keyCancelAble = true
 
-    var tools = DialogTools()
+    private var tools = DialogTools()
 
     /**记录使用次数,如果大于0,则需要初始化参数*/
     private var count = 0
@@ -69,6 +70,15 @@ open class EasyDialog(private var context: Context) {
 
     fun getBaseDialog(): BaseDialog? {
         return mBaseDialog
+    }
+
+    fun setDialogReact(
+        @IntRange(from = 75,to= 90) widthPer:Int = 80,
+        @IntRange(from = 60,to= 100) heightPer:Int = 60
+    ): EasyDialog{
+        tools.dialogWidthPre = widthPer
+        tools.dialogMaxHeightPre = heightPer
+        return this
     }
 
     fun setTitle(title: String): EasyDialog {
@@ -144,16 +154,25 @@ open class EasyDialog(private var context: Context) {
         return this
     }
 
-    /**设置不再提示
-     * @param extendKey 扩展的key,存在相同key的时候用来区分用的
+    /**设置底部操作按钮的排列方式
+     *
+     * 0 横向
+     *
+     * 1 纵向
      * */
-    fun withPrompt(index: Int = 0, extendKey: String = ""): EasyDialog {
+    fun setBottomOption(@IntRange(from=0,to = 1) option:Int): EasyDialog{
+        tools.bottomButtonOption = option
+        return this
+    }
+
+    /**设置不再提示*/
+    fun withPrompt(index: Int = 0): EasyDialog {
         reSetDefault()
         promptEventIndex = index
         if (modes == null)
             promptEventIndex = -1
         this.Prompt = true
-        tiShiKey = "${(context as Activity).localClassName}$extendKey"
+        tiShiKey = (context as Activity).localClassName
         return this
     }
 
@@ -244,6 +263,7 @@ open class EasyDialog(private var context: Context) {
                             titleTextColor,
                             titleBgColor
                         ).setButtonMode(index = -1, prompt = true)
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else {
                     if (spanned != null) {
@@ -256,6 +276,7 @@ open class EasyDialog(private var context: Context) {
                                 prompt = true,
                                 modes = modes!!
                             ).setTitleColors(titleTextColor, titleBgColor)
+                                .setDialogTool(tools)
                         mBaseDialog?.show()
                     } else {
                         mBaseDialog =
@@ -268,6 +289,7 @@ open class EasyDialog(private var context: Context) {
                                     prompt = true,
                                     modes = modes!!
                                 ).setTitleColors(titleTextColor, titleBgColor)
+                                .setDialogTool(tools)
                         mBaseDialog?.show()
                     }
                 }
@@ -283,6 +305,7 @@ open class EasyDialog(private var context: Context) {
                         titleTextColor,
                         titleBgColor
                     ).setButtonMode()
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else if (itemClick != null && strList.isNotEmpty()) {
                     mBaseDialog = BaseDialog(
@@ -297,6 +320,7 @@ open class EasyDialog(private var context: Context) {
                         hideTitleLine, hideAdapterLine,
                         itemClick!!
                     ).setTitleColors(titleTextColor, titleBgColor).setButtonMode()
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else if (spanned != null) {
                     mBaseDialog = BaseDialog(
@@ -306,6 +330,7 @@ open class EasyDialog(private var context: Context) {
                         titleTextColor,
                         titleBgColor
                     ).setButtonMode()
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else {
                     mBaseDialog = BaseDialog(
@@ -315,6 +340,7 @@ open class EasyDialog(private var context: Context) {
                         titleTextColor,
                         titleBgColor
                     ).setButtonMode()
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 }
             } else {
@@ -329,6 +355,7 @@ open class EasyDialog(private var context: Context) {
                         hasTitle,
                         hideTitleLine, hideAdapterLine
                     ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else if (itemClick != null && strList.isNotEmpty()) {
                     mBaseDialog = BaseDialog(
@@ -343,6 +370,7 @@ open class EasyDialog(private var context: Context) {
                         hideTitleLine, hideAdapterLine,
                         itemClick!!
                     ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else if (spanned != null) {
                     mBaseDialog = BaseDialog(
@@ -357,6 +385,7 @@ open class EasyDialog(private var context: Context) {
                         hideTitleLine, hideAdapterLine,
                         showPicture
                     ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 } else {
                     mBaseDialog = BaseDialog(
@@ -370,6 +399,7 @@ open class EasyDialog(private var context: Context) {
                         hasTitle,
                         hideTitleLine, hideAdapterLine
                     ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
                     mBaseDialog?.show()
                 }
             }

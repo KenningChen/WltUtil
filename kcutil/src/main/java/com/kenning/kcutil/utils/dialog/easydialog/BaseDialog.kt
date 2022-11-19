@@ -15,7 +15,9 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.kenning.kcutil.R
+import com.kenning.kcutil.databinding.EasydialogBinding
 import com.kenning.kcutil.utils.math.toInt_
 import com.kenning.kcutil.utils.other.ScreenUtil
 import com.kenning.kcutil.utils.other.getColorResource
@@ -23,7 +25,6 @@ import com.kenning.kcutil.utils.recyclerviewextend.BaseRecyclerViewHolder
 import com.kenning.kcutil.utils.recyclerviewextend.RecycleViewDivider
 import com.kenning.kcutil.widget.SwitchImageView
 import com.kenning.kcutil.widget.basicview.BackGroundTextView
-import kotlinx.android.synthetic.main.easydialog.*
 
 /**
  * Description :
@@ -38,9 +39,10 @@ class BaseDialog : Dialog {
 
     private var adapter: RecyclerView.Adapter<*>? = null
 
+
     /**提示内容*/
     private var msg = ""
-    private var spanned : Spanned ?=null
+    private var spanned : Spanned?=null
 
     private var Prompt = false
 
@@ -174,45 +176,49 @@ class BaseDialog : Dialog {
 
     private var promptEventIndex = -1
 
+    lateinit var binding: EasydialogBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.easydialog)
+        binding=EasydialogBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setCanceledOnTouchOutside(cancel)
 
+        binding.tvDialogName.setEachCornerRadius(tools.radius(),tools.radius(),0,0)
+        binding.bottomview.setEachCornerRadius(0,0,tools.radius(),tools.radius())
+
         if (!hasTitle){
-            topView.visibility = View.VISIBLE
-            titleline.visibility = View.GONE
-            layouttitle.visibility = View.GONE
+            binding.topView.visibility = View.VISIBLE
+            binding.titleline.visibility = View.GONE
+            binding.layouttitle.visibility = View.GONE
         }
 
         if (hideTitleLine){
-            titleline.visibility = View.GONE
+            binding.titleline.visibility = View.GONE
         }
 
-
-        tvDialogName.setTextColor(getColorResource(title_textcolor))
-        tvDialogName.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
-        layouttitle.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
+        binding.tvDialogName.setTextColor(getColorResource(title_textcolor))
+        binding.tvDialogName.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
+        binding.tvDialogName.text = title
         if (showPicture){
-            picture.visibility = View.VISIBLE
+            binding.picture.visibility = View.VISIBLE
         }
-        (findViewById<View>(R.id.tvDialogName) as TextView).text = title
 
         val params = window!!.attributes
-        params.width = tools.dialogWidth
+        params.width = tools.dialogWidth()
         window!!.attributes = params
         //定义dialog最大支持高度
-        val maxHeight = ((mContext as Activity).windowManager.defaultDisplay.height * 0.6).toInt()
+        val maxHeight = tools.dialogMaxHeight()
         if (adapter != null) {
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).adapter = adapter
             if (!hideAdapterLine)
                 (findViewById<View>(R.id.mRecyclerview) as RecyclerView).addItemDecoration(
                     RecycleViewDivider(
                         context,
-                        tools.recycleViewDividerHeight,
+                        tools.recycleViewDividerHeight(),
                         R.color.color_EAEEEF,
-                        tools.recycleViewDividerLeft,
-                        tools.recycleViewDividerRight
+                        tools.recycleViewDividerLeft(),
+                        tools.recycleViewDividerRight()
                     )
                 )
         } else if (strList.isNotEmpty()){
@@ -221,15 +227,15 @@ class BaseDialog : Dialog {
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).addItemDecoration(
                 RecycleViewDivider(
                     context,
-                    tools.recycleViewDividerHeight,
+                    tools.recycleViewDividerHeight(),
                     R.color.color_EAEEEF,
-                    tools.recycleViewDividerLeft,
-                    tools.recycleViewDividerRight
+                    tools.recycleViewDividerLeft(),
+                    tools.recycleViewDividerRight()
                 )
             )
         } else {
-            titleline.visibility = View.GONE
-            adapter = StringAdapter(msg,spanned)
+            binding.titleline.visibility = View.GONE
+            adapter = StringAdapter(msg)
             (findViewById<View>(R.id.mRecyclerview) as RecyclerView).adapter = adapter
         }
 
@@ -242,6 +248,10 @@ class BaseDialog : Dialog {
         }
     }
 
+    fun setDialogTool(tools: DialogTools): BaseDialog {
+        this.tools = tools
+        return this
+    }
 
     fun setTitleColors(
         @ColorRes textcolor: Int = R.color.color_333333,
@@ -255,7 +265,7 @@ class BaseDialog : Dialog {
     private var modes: Array<out ButtonMode>? = null
 
     /**设置底部按钮*/
-    fun setButtonMode(vararg modes: ButtonMode): BaseDialog {
+    fun setButtonMode(vararg modes: ButtonMode,option:Int=0): BaseDialog {
 //        this.modes = modes
 //        return this
         return setButtonMode(index = -1,prompt = false, modes = modes)
@@ -276,48 +286,70 @@ class BaseDialog : Dialog {
 
     /**绘制底部功能按钮*/
     private fun setBottomLayout(modes: Array<out ButtonMode>? = null) {
-        layoutButton.removeAllViews()
+        binding.layoutButton.removeAllViews()
+        binding.layoutButton.orientation = tools.bottomButtonOption
         if (modes != null && modes.isNotEmpty()) {
             var index = 0
             for (item in modes) {
                 var button: BackGroundTextView = LayoutInflater.from(mContext)
                     .inflate(R.layout.item_button, null) as BackGroundTextView
                 button.tag = index
-                val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
-                )
-                if (index == 0 && modes.size - 1 > index) {
-                    button.setEachCornerRadius(
-                        0,
-                        0,
-                        tools.radius,
-                        0
+                val params: LinearLayout.LayoutParams
+                if (tools.bottomButtonOption == 0) {//横向排列button
+                    params = LinearLayout.LayoutParams(
+                        0, tools.buttonHeight(), 1f
                     )
-                } else if (index == 0 && modes.size - 1 == index) {
-                    button.setEachCornerRadius(
-                        0,
-                        0,
-                        tools.radius,
-                        tools.radius
+                    if (index == 0 && modes.size - 1 > index) {
+                        button.setEachCornerRadius(
+                            0,
+                            0,
+                            tools.radius(),
+                            0
+                        )
+                    } else if (index == 0 && modes.size - 1 == index) {
+                        button.setEachCornerRadius(
+                            0,
+                            0,
+                            tools.radius(),
+                            tools.radius()
+                        )
+                    } else if (index != 0 && modes.size - 1 == index) {
+                        button.setEachCornerRadius(
+                            0,
+                            0,
+                            0,
+                            tools.radius()
+                        )
+                    }
+                }else{//纵向排列
+                    params = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, tools.buttonHeight()
                     )
-                } else if (index != 0 && modes.size - 1 == index) {
-                    button.setEachCornerRadius(
-                        0,
-                        0,
-                        0,
-                        tools.radius
-                    )
+                    if(modes.size - 1 == index){
+                        button.setEachCornerRadius(
+                            0,
+                            0,
+                            tools.radius(),
+                            tools.radius()
+                        )
+                    }
                 }
 
                 if (index > 0) {
                     var textview = TextView(mContext)
-                    val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                        ScreenUtil.dip2px(1f),
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    )
+                    val params: LinearLayout.LayoutParams =
+                        if (tools.bottomButtonOption == 0) {
+                            LinearLayout.LayoutParams(
+                                ScreenUtil.dip2px(1f),LinearLayout.LayoutParams.MATCH_PARENT
+                            )
+                        }else{
+                            LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,ScreenUtil.dip2px(1f)
+                            )
+                        }
                     textview.setBackgroundColor(getColorResource(R.color.color_EAEEEF))
                     textview.layoutParams = params
-                    layoutButton.addView(textview)
+                    binding.layoutButton.addView(textview)
                 }
 
                 button.text = item.text
@@ -331,7 +363,7 @@ class BaseDialog : Dialog {
                 button.setNormalBackgroundColor(getColorResource(item.backgroundcolor))
                 button.layoutParams = params
 
-                layoutButton.addView(button)
+                binding.layoutButton.addView(button)
 
                 index++
             }
@@ -340,13 +372,13 @@ class BaseDialog : Dialog {
                 LayoutInflater.from(mContext)
                     .inflate(R.layout.item_button, null) as BackGroundTextView
             val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                0, tools.buttonHeight, 1f
+                0, tools.buttonHeight(), 1f
             )
             button.setEachCornerRadius(
                 0,
                 0,
-                tools.radius,
-                tools.radius
+                tools.radius(),
+                tools.radius()
             )
 
             button.text = "我知道了"
@@ -361,7 +393,7 @@ class BaseDialog : Dialog {
                 }
                 dismiss()
             }
-            layoutButton.addView(button)
+            binding.layoutButton.addView(button)
         }
     }
 
@@ -375,9 +407,12 @@ class BaseDialog : Dialog {
                 setBottomLayout(modes)
             }
         }else{
-            line.visibility = View.GONE
-            layoutButton.visibility = View.GONE
-            bottomview.visibility = View.VISIBLE
+            binding.line.visibility = View.GONE
+            binding.layoutButton.visibility = View.GONE
+            binding.bottomview.visibility = View.VISIBLE
+            val param =
+                binding.bottomview.layoutParams.apply { height = tools.radius() }
+            binding.bottomview.layoutParams = param
         }
     }
 
@@ -401,7 +436,8 @@ class BaseDialog : Dialog {
                 holder.setText(R.id.tvMsg, spanned)
                 (holder.getView<TextView>(R.id.tvMsg)).apply {
                     movementMethod = LinkMovementMethod.getInstance()
-                    highlightColor = ResourcesCompat.getColor(mContext!!.resources,R.color.transparent,null)
+                    highlightColor = ResourcesCompat.getColor(mContext!!.resources,R.color
+                        .transparent,null)
                 }
             }else {
                 holder.setText(R.id.tvMsg, string)
@@ -431,13 +467,14 @@ class BaseDialog : Dialog {
 
     }
 
-    inner class StringListAdapter(var list: Array<String?>): RecyclerView.Adapter<BaseRecyclerViewHolder>(){
+    inner class StringListAdapter(var list: Array<String?>): RecyclerView
+    .Adapter<BaseRecyclerViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder {
             return BaseRecyclerViewHolder.getHolder(parent.context, parent, R.layout.diaog_strlist)
         }
 
         override fun onBindViewHolder(holder: BaseRecyclerViewHolder, position: Int) {
-            holder.setText(R.id.tvMsg, list[position]?:"")
+            holder.setText(R.id.tvMsg, list[position])
             holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
             holder.setOnclickListioner(R.id.tvMsg){
                 itemClick?.invoke(holder.adapterPosition)
