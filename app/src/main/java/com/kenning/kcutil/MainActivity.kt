@@ -3,6 +3,7 @@ package com.kenning.kcutil
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ClickableSpan
@@ -48,7 +49,10 @@ class MainActivity : BaseActivity(), IPickerListener {
 ////                .setLoaction(PickerControl.ShowLocation.BOTTOM)
 //                .start(R.id.fcvMain)
 //            startActivity(Intent(this, ReduxTestAct::class.java))
-            EasyDialog(this).setContentMsg(CMApiWarnToast(this))
+            val title = """
+                <b>提示</b>
+            """.trimIndent()
+            EasyDialog(this).setTitle(Html.fromHtml(title)).setContentMsg(CMApiWarnToast(this))
                 .setButtonMode(
                     ButtonMode("测试"),
                     ButtonMode("测试"),

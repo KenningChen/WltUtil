@@ -16,7 +16,7 @@ import com.kenning.kcutil.R
  */
 open class EasyDialog(private var context: Context) {
 
-    private var title = ""
+    private var title :Any? = null
 
     private var titleTextColor = R.color.color_333333
 
@@ -82,6 +82,12 @@ open class EasyDialog(private var context: Context) {
     }
 
     fun setTitle(title: String): EasyDialog {
+        reSetDefault()
+        this.title = title
+        return this
+    }
+
+    fun setTitle(title: Spanned): EasyDialog {
         reSetDefault()
         this.title = title
         return this
@@ -236,7 +242,7 @@ open class EasyDialog(private var context: Context) {
     fun build() {
         count++
         mIsReset = false
-        if (title.isEmpty()) {
+        if (title == null) {
             this.title = "提示"
         }
 
@@ -256,7 +262,8 @@ open class EasyDialog(private var context: Context) {
                 //跳转提示窗口
                 if (modes == null) {
                     mBaseDialog = BaseDialog(
-                        context, title, msg,mGravity, cancelable,keyCancelAble, hasButtons, hasTitle,
+                        context, title!!, msg,mGravity, cancelable,keyCancelAble, hasButtons,
+                        hasTitle,
                         hideTitleLine, hideAdapterLine
                     )
                         .setTitleColors(
@@ -269,7 +276,8 @@ open class EasyDialog(private var context: Context) {
                     if (spanned != null) {
                         mBaseDialog =
                             BaseDialog(
-                                context, title, spanned!!,mGravity, cancelable,keyCancelAble, hasButtons,
+                                context, title!!, spanned!!,mGravity, cancelable,keyCancelAble,
+                                hasButtons,
                                 hasTitle, hideTitleLine, hideAdapterLine, showPicture
                             ).setButtonMode(
                                 index = promptEventIndex,
@@ -281,7 +289,8 @@ open class EasyDialog(private var context: Context) {
                     } else {
                         mBaseDialog =
                             BaseDialog(
-                                context, title, msg,mGravity, cancelable,keyCancelAble, hasButtons, hasTitle,
+                                context, title!!, msg,mGravity, cancelable,keyCancelAble,
+                                hasButtons, hasTitle,
                                 hideTitleLine, hideAdapterLine
                             )
                                 .setButtonMode(
@@ -299,7 +308,7 @@ open class EasyDialog(private var context: Context) {
             if (modes == null) {
                 if (adapter != null) {
                     mBaseDialog = BaseDialog(
-                        context, title, adapter!!, cancelable,keyCancelAble, hasButtons,
+                        context, title!!, adapter!!, cancelable,keyCancelAble, hasButtons,
                         hasTitle, hideTitleLine, hideAdapterLine
                     ).setTitleColors(
                         titleTextColor,
@@ -310,7 +319,7 @@ open class EasyDialog(private var context: Context) {
                 } else if (itemClick != null && strList.isNotEmpty()) {
                     mBaseDialog = BaseDialog(
                         context,
-                        title,
+                        title!!,
                         strList,
                         mGravity,
                         cancelable,
@@ -324,7 +333,7 @@ open class EasyDialog(private var context: Context) {
                     mBaseDialog?.show()
                 } else if (spanned != null) {
                     mBaseDialog = BaseDialog(
-                        context, title, spanned!!,mGravity, cancelable,keyCancelAble, hasButtons,
+                        context, title!!, spanned!!,mGravity, cancelable,keyCancelAble, hasButtons,
                         hasTitle, hideTitleLine, hideAdapterLine, showPicture
                     ).setTitleColors(
                         titleTextColor,
@@ -334,7 +343,7 @@ open class EasyDialog(private var context: Context) {
                     mBaseDialog?.show()
                 } else {
                     mBaseDialog = BaseDialog(
-                        context, title, msg,mGravity, cancelable,keyCancelAble, hasButtons,
+                        context, title!!, msg,mGravity, cancelable,keyCancelAble, hasButtons,
                         hasTitle, hideTitleLine, hideAdapterLine
                     ).setTitleColors(
                         titleTextColor,
@@ -347,7 +356,7 @@ open class EasyDialog(private var context: Context) {
                 if (adapter != null) {
                     mBaseDialog = BaseDialog(
                         context,
-                        title,
+                        title!!,
                         adapter!!,
                         cancelable,
                         keyCancelAble,
@@ -360,7 +369,7 @@ open class EasyDialog(private var context: Context) {
                 } else if (itemClick != null && strList.isNotEmpty()) {
                     mBaseDialog = BaseDialog(
                         context,
-                        title,
+                        title!!,
                         strList,
                         mGravity,
                         cancelable,
@@ -375,7 +384,7 @@ open class EasyDialog(private var context: Context) {
                 } else if (spanned != null) {
                     mBaseDialog = BaseDialog(
                         context,
-                        title,
+                        title!!,
                         spanned!!,
                         mGravity,
                         cancelable,
@@ -390,7 +399,7 @@ open class EasyDialog(private var context: Context) {
                 } else {
                     mBaseDialog = BaseDialog(
                         context,
-                        title,
+                        title!!,
                         msg,
                         mGravity,
                         cancelable,

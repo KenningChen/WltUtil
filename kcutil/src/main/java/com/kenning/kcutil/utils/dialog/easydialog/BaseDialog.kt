@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
@@ -34,7 +35,7 @@ import kotlinx.android.synthetic.main.easydialog.*
 class BaseDialog : Dialog {
     private var mContext: Context? = null
 
-    private var title = ""
+    private var title:Any = ""
 
     private var adapter: RecyclerView.Adapter<*>? = null
 
@@ -71,7 +72,7 @@ class BaseDialog : Dialog {
 
     constructor(
         mContext: Context,
-        title: String,
+        title: Any,
         strList: Array<String?>,
         gravity: Int,
         cancel: Boolean,
@@ -97,7 +98,7 @@ class BaseDialog : Dialog {
 
     constructor(
         mContext: Context,
-        title: String,
+        title: Any,
         adapter: RecyclerView.Adapter<*>,
         cancel: Boolean,
         keyCancelAble: Boolean,
@@ -119,7 +120,7 @@ class BaseDialog : Dialog {
 
     constructor(
         mContext: Context,
-        title: String,
+        title: Any,
         msg: String,
         gravity: Int,
         cancel: Boolean,
@@ -143,7 +144,7 @@ class BaseDialog : Dialog {
 
     constructor(
         mContext: Context,
-        title: String,
+        title: Any,
         spanned: Spanned,
         gravity: Int,
         cancel: Boolean,
@@ -197,7 +198,8 @@ class BaseDialog : Dialog {
         if (showPicture) {
             picture.visibility = View.VISIBLE
         }
-        (findViewById<View>(R.id.tvDialogName) as TextView).text = title
+        (findViewById<View>(R.id.tvDialogName) as TextView).text = if (title is String) title.toString()
+        else title as Spanned
 
         val params = window!!.attributes
         params.width = tools.dialogWidth()
