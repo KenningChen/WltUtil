@@ -172,13 +172,13 @@ open class EasyDialog(private var context: Context) {
     }
 
     /**设置不再提示*/
-    fun withPrompt(index: Int = 0): EasyDialog {
+    fun withPrompt(index: Int = 0, extendKey: String = ""): EasyDialog {
         reSetDefault()
         promptEventIndex = index
         if (modes == null)
             promptEventIndex = -1
         this.Prompt = true
-        tiShiKey = (context as Activity).localClassName
+        tiShiKey = "${(context as Activity).localClassName}$extendKey"
         return this
     }
 
