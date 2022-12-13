@@ -33,4 +33,11 @@ public enum DateEnum {
     Next30Days,
     /**其他*/
     OTHER;
+
+    public static DateEnum indexOf(int ordinal) {
+        if (ordinal < 0 || ordinal >= values().length) {
+            throw new IndexOutOfBoundsException("Invalid ordinal");
+        }
+        return values()[ordinal];
+    }
 }
