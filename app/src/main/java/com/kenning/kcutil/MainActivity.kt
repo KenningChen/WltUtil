@@ -48,29 +48,38 @@ class MainActivity : BaseActivity(), IPickerListener {
 //                .setRequestCode(111)
 ////                .setLoaction(PickerControl.ShowLocation.BOTTOM)
 //                .start(R.id.fcvMain)
-//            startActivity(Intent(this, ReduxTestAct::class.java))
-            val title = """
-                <b>提示</b>
-            """.trimIndent()
-            EasyDialog(this).setTitle(Html.fromHtml(title)).setContentMsg(CMApiWarnToast(this))
-                .setButtonMode(
-                    ButtonMode("测试"),
-                    ButtonMode("测试"),
-                    ButtonMode("测试")
-                ).setBottomOption(1).setDialogReact(75,heightPer=90)
-                .build()
-//            EasyDialog(this).setTitle("地对地导弹地对地导弹的地对地导弹地对地导弹的111地对地导弹地对地导弹的地对地导弹地对地导弹的111")
-//                .setArray(arrayOf("1","2","3","4","5","6","7",
-//                    "8","1","2","3","4","5","6","7",
-//                    "8")){
-//                    Snackbar.make(view, "$it", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show()
-//                }.setButtonMode(
+////            startActivity(Intent(this, ReduxTestAct::class.java))
+//            val title = """
+//                <b>提示</b>
+//            """.trimIndent()
+//            EasyDialog(this).setTitle(Html.fromHtml(title)).setContentMsg(CMApiWarnToast(this))
+//                .setButtonMode(
 //                    ButtonMode("测试"),
 //                    ButtonMode("测试"),
 //                    ButtonMode("测试")
-//                ).setBottomOption(1).setDialogReact(90,heightPer=90)
+//                ).setBottomOption(1).setDialogReact(75,heightPer=90)
 //                .build()
+            val dialog = EasyDialog(this)
+            dialog.setTitle("地对地导弹地对地导弹的地对地导弹地对地导弹的111地对地导弹地对地导弹的地对地导弹地对地导弹的111")
+                .setArray(arrayOf("1","2","3","4","5","6","7",
+                    "8","1","2","3","4","5","6","7",
+                    "8")){
+                    Snackbar.make(view, "$it", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                }.setButtonMode(
+                    ButtonMode("测试"),
+                    ButtonMode("测试"),
+                    ButtonMode("show other"){
+                        it?.dismiss()
+                        EasyDialog(this).setContentMsg("other dialog").setButtonMode(
+                            ButtonMode("测试"){
+                                it?.dismiss()
+                                dialog.build()
+                            }
+                        ).build()
+                    }
+                ).setBottomOption(1).setDialogReact(90,heightPer=90).cancelAble(false).keyCancelAble(false)
+                .build()
         }
     }
 
