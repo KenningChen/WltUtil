@@ -44,8 +44,8 @@ class BaseDialog : Dialog {
     private var spanned: Spanned? = null
 
     private var Prompt = false
-
-    private var tiShiKey = ""
+//
+//    private var tiShiKey = ""
 
     private var isCheckNoTishi = "false"
 
@@ -274,7 +274,7 @@ class BaseDialog : Dialog {
     fun setButtonMode(index: Int, prompt: Boolean, vararg modes: ButtonMode): BaseDialog {
         if (adapter == null) {
             this.Prompt = prompt
-            tiShiKey = (mContext as Activity).localClassName
+//            tiShiKey = tools.promptTag//(mContext as Activity).localClassName
         }
         promptEventIndex = index
         this.modes = modes
@@ -352,7 +352,7 @@ class BaseDialog : Dialog {
                 button.text = item.text
                 button.setOnClickListener {
                     if (Prompt && promptEventIndex == it.tag.toInt_()) {
-                        tools.setPreferences(context, "EasyDialogTiShi", tiShiKey, isCheckNoTishi)
+                        tools.setPreferences(context, "EasyDialogTiShi", tools.promptTag, isCheckNoTishi)
                     }
                     item.click?.invoke(this) ?: dismiss()
                 }
@@ -386,7 +386,7 @@ class BaseDialog : Dialog {
 
             button.setOnClickListener {
                 if (Prompt) {
-                    tools.setPreferences(context, "EasyDialogTiShi", tiShiKey, "$isCheckNoTishi")
+                    tools.setPreferences(context, "EasyDialogTiShi", tools.promptTag, "$isCheckNoTishi")
                 }
                 dismiss()
             }

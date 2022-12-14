@@ -179,6 +179,7 @@ open class EasyDialog(private var context: Context) {
             promptEventIndex = -1
         this.Prompt = true
         tiShiKey = "${(context as Activity).localClassName}$extendKey"
+        tools.promptTag = tiShiKey
         return this
     }
 

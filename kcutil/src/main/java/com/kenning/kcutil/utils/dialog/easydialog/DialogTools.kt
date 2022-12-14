@@ -24,6 +24,9 @@ class DialogTools {
      * */
     var bottomButtonOption = 0
 
+    /** 不再提示的标记*/
+    var promptTag = ""
+
     /**
      * 对话框宽度
      * -1为内部默认值
