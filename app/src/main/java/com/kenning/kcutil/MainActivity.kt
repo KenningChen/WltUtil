@@ -60,7 +60,8 @@ class MainActivity : BaseActivity(), IPickerListener {
 //                ).setBottomOption(1).setDialogReact(75,heightPer=90)
 //                .build()
             val dialog = EasyDialog(this)
-            dialog.setTitle("地对地导弹地对地导弹的地对地导弹地对地导弹的111地对地导弹地对地导弹的地对地导弹地对地导弹的111")
+            dialog.setTitle("ddd")
+                .showPicture(R.drawable.ic_launcher_background)
                 .setArray(arrayOf("1","2","3","4","5","6","7",
                     "8","1","2","3","4","5","6","7",
                     "8")){
@@ -76,7 +77,7 @@ class MainActivity : BaseActivity(), IPickerListener {
                                 it?.dismiss()
                                 dialog.build()
                             }
-                        ).build()
+                        ).withPrompt(promptMsg = "哈哈").build()
                     }
                 ).setBottomOption(1).setDialogReact(90,heightPer=90).cancelAble(false).keyCancelAble(false)
                 .build()

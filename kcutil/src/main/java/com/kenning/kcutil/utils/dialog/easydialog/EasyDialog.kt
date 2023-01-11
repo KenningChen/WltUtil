@@ -224,6 +224,7 @@ open class EasyDialog(private var context: Context) {
         reSetDefault()
         tools.errorTitlePic = pic
         showPicture = true
+        tools.showPicture = true
         return this
     }
 
@@ -249,6 +250,9 @@ open class EasyDialog(private var context: Context) {
             strList = arrayOf<String?>()
             itemClick = null
             mGravity = Gravity.CENTER
+
+            tools.showPicture = false
+            tools.bottomButtonOption = 0
         }
         mIsReset = true
     }

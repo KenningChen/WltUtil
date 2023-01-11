@@ -196,7 +196,7 @@ class BaseDialog : Dialog {
         tvDialogName.setEachCornerRadius(tools.radius(), tools.radius(), 0, 0)
         bottomview.setEachCornerRadius(0, 0, tools.radius(), tools.radius())
         layouttitle.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
-        if (showPicture) {
+        if (tools.showPicture) {
             picture.visibility = View.VISIBLE
             picture.setImageDrawable(getDrawableResource(tools.errorTitlePic))
         }

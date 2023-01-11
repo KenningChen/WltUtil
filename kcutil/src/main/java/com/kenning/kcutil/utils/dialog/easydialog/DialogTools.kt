@@ -27,6 +27,8 @@ class DialogTools {
     /** 不再提示的标记*/
     var promptTag = ""
 
+    var showPicture = false
+
     var promptMsg = ""
 
     var errorTitlePic = -1
