@@ -27,6 +27,10 @@ class DialogTools {
     /** 不再提示的标记*/
     var promptTag = ""
 
+    var promptMsg = ""
+
+    var errorTitlePic = -1
+
     /**
      * 对话框宽度
      * -1为内部默认值

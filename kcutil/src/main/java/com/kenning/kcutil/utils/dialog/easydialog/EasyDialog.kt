@@ -183,6 +183,18 @@ open class EasyDialog(private var context: Context) {
         return this
     }
 
+    fun withPrompt(index: Int = 0,promptMsg:String, extendKey: String = ""): EasyDialog {
+        reSetDefault()
+        promptEventIndex = index
+        if (modes == null)
+            promptEventIndex = -1
+        this.Prompt = true
+        tiShiKey = "${(context as Activity).localClassName}$extendKey"
+        tools.promptTag = tiShiKey
+        tools.promptMsg = promptMsg
+        return this
+    }
+
     /**设置是否需要底部按钮*/
     fun needNoNButtons(non: Boolean): EasyDialog {
         reSetDefault()
@@ -208,8 +220,9 @@ open class EasyDialog(private var context: Context) {
         return this
     }
 
-    fun showPicture(): EasyDialog {
+    fun showPicture(pic:Int): EasyDialog {
         reSetDefault()
+        tools.errorTitlePic = pic
         showPicture = true
         return this
     }

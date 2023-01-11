@@ -20,6 +20,7 @@ import com.kenning.kcutil.R
 import com.kenning.kcutil.utils.math.toInt_
 import com.kenning.kcutil.utils.other.ScreenUtil
 import com.kenning.kcutil.utils.other.getColorResource
+import com.kenning.kcutil.utils.other.getDrawableResource
 import com.kenning.kcutil.utils.recyclerviewextend.BaseRecyclerViewHolder
 import com.kenning.kcutil.utils.recyclerviewextend.RecycleViewDivider
 import com.kenning.kcutil.widget.SwitchImageView
@@ -197,6 +198,7 @@ class BaseDialog : Dialog {
         layouttitle.setNormalBackgroundColor(getColorResource(title_backgroundcolor))
         if (showPicture) {
             picture.visibility = View.VISIBLE
+            picture.setImageDrawable(getDrawableResource(tools.errorTitlePic))
         }
         (findViewById<View>(R.id.tvDialogName) as TextView).text = if (title is String) title.toString()
         else title as Spanned
@@ -455,6 +457,8 @@ class BaseDialog : Dialog {
                 holder.getView<View>(R.id.layoutTishi).setOnClickListener {
                     holder.getView<SwitchImageView>(R.id.switchView).performClick()
                 }
+                if (tools.promptMsg.isNotEmpty())
+                holder.setText(R.id.msgTag,tools.promptMsg)
             }
         }
 
