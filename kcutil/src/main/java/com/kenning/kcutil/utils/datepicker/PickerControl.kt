@@ -1,5 +1,6 @@
 package com.kenning.kcutil.utils.datepicker
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import cn.carbswang.android.numberpickerview.library.NumberPickerView
 import com.kenning.kcutil.R
@@ -260,6 +261,7 @@ class PickerControl(var fragment: Fragment) {
 
                         if (days.indexOf("${currentDay}日") == -1) {
                             findViewById<NumberPickerView>(R.id.dayonly).value = days.size - 1
+                            currentDay = days.last().replace("日","")
                         } else {
                             findViewById<NumberPickerView>(R.id.dayonly).value =
                                 days.indexOf("${currentDay}日")
@@ -337,6 +339,7 @@ class PickerControl(var fragment: Fragment) {
                         }
                         if (days.indexOf("${currentDay}日") == -1) {
                             findViewById<NumberPickerView>(R.id.day).value = days.size - 1
+                            currentDay = days.last().replace("日","")
                         } else {
                             findViewById<NumberPickerView>(R.id.day).value =
                                 days.indexOf("${currentDay}日")
@@ -368,6 +371,7 @@ class PickerControl(var fragment: Fragment) {
 
                     if (days.indexOf("${currentDay}日") == -1) {
                         findViewById<NumberPickerView>(R.id.day).value = days.size - 1
+                        currentDay = days.last().replace("日","")
                     } else {
                         findViewById<NumberPickerView>(R.id.day).value =
                             days.indexOf("${currentDay}日")
@@ -416,6 +420,7 @@ class PickerControl(var fragment: Fragment) {
                         }
                         if (days.indexOf("${currentDay_end}日") == -1) {
                             findViewById<NumberPickerView>(R.id.day).value = days.size - 1
+                            currentDay_end = days.last().replace("日","")
                         } else {
                             findViewById<NumberPickerView>(R.id.day).value =
                                 days.indexOf("${currentDay_end}日")
@@ -446,9 +451,10 @@ class PickerControl(var fragment: Fragment) {
                         findViewById<NumberPickerView>(R.id.day_end).displayedValues =
                             days.toTypedArray()
                     }
-
+                    Log.e("kenning",currentDay_end)
                     if (days.indexOf("${currentDay_end}日") == -1) {
                         findViewById<NumberPickerView>(R.id.day_end).value = days.size - 1
+                        currentDay_end = days.last().replace("日","")
                     } else {
                         findViewById<NumberPickerView>(R.id.day_end).value =
                             days.indexOf("${currentDay_end}日")
