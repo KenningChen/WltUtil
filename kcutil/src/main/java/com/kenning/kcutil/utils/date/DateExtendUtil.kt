@@ -1,5 +1,6 @@
 package com.kenning.kcutil.utils.date
 
+import com.kenning.kcutil.utils.math.toInt_
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -103,7 +104,7 @@ object DateExtendUtil {
      * @param type String 可选 星期 和 周
      * @return String 返回对应的 星期几 和 周几
      */
-    fun getTodayOfWeekInfo(type:String): String {
+    fun getTodayOfWeekInfo(type: String): String {
         var TodayOfWeek = ""
         val cal = Calendar.getInstance()
         cal.time = Date()
@@ -148,6 +149,67 @@ object DateExtendUtil {
         return calendar.time formatBy Date_Format.YMD
     }
 
+    /**
+     * 按月 获取当前日期(时间)的差额日期(时间)
+     * @param baseDate 基准时间点
+     * @param format 基准时间点的日期格式(必须匹配)
+     * @param balance 偏移时间的长度
+     * @param calculateDay 是否计算天数的时间
+     * @param type 偏移类型
+     * @param offset 二次偏移量 偏移时间单位为天
+     * @param resultFormat 计算后的日期格式 默认与 基准点的时间格式一样
+     */
+    fun getBalanceDateByMonth(
+        baseDate: String,
+        format: SimpleDateFormat,
+        balance: Int,
+        calculateDay: Boolean,
+        offset: Int,
+        resultFormat: SimpleDateFormat = format
+    ): String {
+        val date = baseDate.parseBy(format)!!
+
+        val calendar = Calendar.getInstance() //得到日历
+        calendar.time = date //把当前时间赋给日历
+
+        val days = getDay(date)//基准日期过了所在月份的几天了
+        //初始化一个仅有日期没有天数的日历
+        val time: String = calendar.time.formatBy(SimpleDateFormat("yyyyMM", Locale.CHINA))
+        val calendarMonth = Calendar.getInstance()
+        calendarMonth.time = time.parseBy(SimpleDateFormat("yyyyMM", Locale.CHINA))!! //把当前时间赋给日历
+
+        calendarMonth.add(Calendar.MONTH, balance)
+        if (calculateDay)
+            calendarMonth.add(Calendar.DATE, days - 1)
+        //重新赋值给原始日历
+        calendar.time = calendarMonth.time
+        val os = offset.toInt_()
+        if (os != 0 && calculateDay)
+            calendar.add(Calendar.DATE, os)
+        return calendar.time.formatBy(resultFormat)
+    }
+
+    /**按天 获取当前日期(时间)的差额日期(时间)
+     * @param baseDate 基准时间点
+     * @param format 基准时间点的日期格式(必须匹配)
+     * @param balance 偏移时间的长度
+     * @param resultFormat 计算后的日期格式 默认与 基准点的时间格式一样
+     */
+    fun getBalanceDateByDay(
+        baseDate: String,
+        format: SimpleDateFormat,
+        balance: Int,
+        resultFormat: SimpleDateFormat = format
+    ): String {
+        val date = baseDate.parseBy(format)!!
+
+        val calendar = Calendar.getInstance() //得到日历
+        calendar.time = date //把当前时间赋给日历
+
+        calendar.add(Calendar.DATE, balance)
+        return calendar.time.formatBy(resultFormat)
+    }
+
     // 返回第几个月份，不是几月
     // 季度一年四季， 第一季度：2月-4月， 第二季度：5月-7月， 第三季度：8月-10月， 第四季度：11月-1月
     private fun getQuarterInMonth(month: Int, isQuarterStart: Boolean): Int {
@@ -157,6 +219,7 @@ object DateExtendUtil {
         }
         return if (month in 2..4) months[0] else if (month in 5..7) months[1] else if (month in 8..10) months[2] else months[3]
     }
+
     /**
      * 根据日期获取是该日期是一年的第几周
      *
@@ -189,7 +252,7 @@ object DateExtendUtil {
      * @param date
      * @return
      */
-    fun getMondayOfWeek(date: Date=Date()): Date {
+    fun getMondayOfWeek(date: Date = Date()): Date {
         val monday = Calendar.getInstance()
         monday.time = date
         monday.firstDayOfWeek = FIRST_DAY_OF_WEEK
@@ -203,7 +266,7 @@ object DateExtendUtil {
      * @param date
      * @return
      */
-    fun getSundayOfWeek(date: Date=Date()): Date {
+    fun getSundayOfWeek(date: Date = Date()): Date {
         val sunday = Calendar.getInstance()
         sunday.time = date
         sunday.firstDayOfWeek = FIRST_DAY_OF_WEEK
@@ -361,8 +424,8 @@ object DateExtendUtil {
      * @param date
      * @return
      */
-    fun getSeasonDate(date: Date= Date()): Array<Date> {
-        val season = arrayOf(Date(),Date(),Date())
+    fun getSeasonDate(date: Date = Date()): Array<Date> {
+        val season = arrayOf(Date(), Date(), Date())
         val c = Calendar.getInstance()
         c.time = date
         //        c.set(Calendar.DAY_OF_MONTH, 1);
@@ -406,7 +469,7 @@ object DateExtendUtil {
      * @param date
      * @return
      */
-    fun getSeason(date: Date= Date()): Int {
+    fun getSeason(date: Date = Date()): Int {
         var season = 0
         val c = Calendar.getInstance()
         c.time = date
@@ -437,7 +500,7 @@ object DateExtendUtil {
     }
 
     /**获取近7天对应的日期*/
-    fun getNear7DaysDAteStr(format: SimpleDateFormat = Date_Format.YMD):String{
+    fun getNear7DaysDAteStr(format: SimpleDateFormat = Date_Format.YMD): String {
         val calendar = Calendar.getInstance() // 得到日历
         calendar.time = Date()
         calendar.add(Calendar.DATE, -6)
@@ -445,7 +508,7 @@ object DateExtendUtil {
     }
 
     /**获取近30天对应的日期*/
-    fun getNear30DaysDAteStr(format: SimpleDateFormat = Date_Format.YMD):String{
+    fun getNear30DaysDAteStr(format: SimpleDateFormat = Date_Format.YMD): String {
         val calendar = Calendar.getInstance() // 得到日历
         calendar.time = Date()
         calendar.add(Calendar.DATE, -29)
@@ -467,14 +530,19 @@ object DateExtendUtil {
      * @param startTime String
      * @return Int
      */
-    fun getBetweenTime(format: SimpleDateFormat, type:DifTimeType, lastTime:String, startTime:String):Int{
+    fun getBetweenTime(
+        format: SimpleDateFormat,
+        type: DifTimeType,
+        lastTime: String,
+        startTime: String
+    ): Int {
         return try {
             val cal = Calendar.getInstance()
             cal.time = format.parse(startTime)
             val time1 = cal.timeInMillis
             cal.time = format.parse(lastTime)
             val time2 = cal.timeInMillis
-            val between_days = when(type){
+            val between_days = when (type) {
                 DifTimeType.DAY -> (time2 - time1) / (1000 * 3600 * 24)//天数差
                 DifTimeType.SECOND -> (time2 - time1) / 1000//秒差
                 DifTimeType.MINUTES -> (time2 - time1) / (1000 * 60)// 分钟差
@@ -486,11 +554,13 @@ object DateExtendUtil {
     }
 
     /**时差类型*/
-    enum class DifTimeType{
+    enum class DifTimeType {
         /**天数差*/
         DAY,
+
         /**秒差*/
         SECOND,
+
         /**分钟差*/
         MINUTES
     }
