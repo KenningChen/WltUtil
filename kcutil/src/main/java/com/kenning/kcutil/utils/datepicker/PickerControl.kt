@@ -293,6 +293,7 @@ class PickerControl(var fragment: Fragment) {
                     }
                     if (days.indexOf("${currentDay}日") == -1) {
                         findViewById<NumberPickerView>(R.id.dayonly).value = days.size - 1
+                        currentDay = days.last().replace("日","")
                     } else {
                         findViewById<NumberPickerView>(R.id.dayonly).value =
                             days.indexOf("${currentDay}日")
