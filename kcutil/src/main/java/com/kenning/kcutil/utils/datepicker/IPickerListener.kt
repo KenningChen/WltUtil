@@ -7,5 +7,5 @@ package com.kenning.kcutil.utils.datepicker
  */
 interface IPickerListener {
     fun onDismissPicker()
-    fun onDateChange(requestcode: Int, start: String, end: String)
+    fun onDateChange(requestcode: Int, start: String, end: String):Boolean
 }

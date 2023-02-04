@@ -158,13 +158,16 @@ class DatePickerFragment : Fragment(),IDatePickerBase {
         }
 
         mView.findViewById<View>(R.id.select).setOnClickListener {
-            (mViewModel.tagetFragment.value as IPickerListener).onDismissPicker()
+
             //日期回传
-            (mViewModel.tagetFragment.value as IPickerListener).onDateChange(
+            val suc = (mViewModel.tagetFragment.value as IPickerListener).onDateChange(
                 code, startdate, enddate
             )
 //            needBackValues = true
-            requireActivity().supportFragmentManager.popBackStack()
+            if (suc) {
+                (mViewModel.tagetFragment.value as IPickerListener).onDismissPicker()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
 
         mView.findViewById<View>(R.id.backgroundWall).setOnClickListener {

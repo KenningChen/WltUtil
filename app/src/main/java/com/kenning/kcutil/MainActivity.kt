@@ -116,8 +116,9 @@ class MainActivity : BaseActivity(), IPickerListener {
 
     }
 
-    override fun onDateChange(requestcode: Int, start: String, end: String) {
+    override fun onDateChange(requestcode: Int, start: String, end: String):Boolean {
         binding.tag11.text = "$start-$end"
+        return true
     }
 
 }

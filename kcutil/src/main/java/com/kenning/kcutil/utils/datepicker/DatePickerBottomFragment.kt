@@ -195,13 +195,16 @@ class DatePickerBottomFragment  : BottomSheetDialogFragment(),IDatePickerBase {
         }
 
         mView.findViewById<View>(R.id.select).setOnClickListener {
-            (mViewModel.tagetFragment.value as IPickerListener).onDismissPicker()
+
             //日期回传
-            (mViewModel.tagetFragment.value as IPickerListener).onDateChange(
+            val suc = (mViewModel.tagetFragment.value as IPickerListener).onDateChange(
                 code, startdate, enddate
             )
 //            needBackValues = true
-            dismiss()
+            if (suc) {
+                (mViewModel.tagetFragment.value as IPickerListener).onDismissPicker()
+                dismiss()
+            }
         }
 
 //        mView.findViewById<View>(R.id.backgroundWall).setOnClickListener {

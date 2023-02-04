@@ -58,7 +58,8 @@ class FirstFragment : BaseBusinessFragment(), IPickerListener {
 //        Log.d("kenning", "日期选择器关闭")
     }
 
-    override fun onDateChange(requestcode: Int, start: String, end: String) {
+    override fun onDateChange(requestcode: Int, start: String, end: String):Boolean {
         binding.textviewFirst.text = "$start - $end"
+        return true
     }
 }
