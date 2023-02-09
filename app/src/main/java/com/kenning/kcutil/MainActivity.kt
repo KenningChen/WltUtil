@@ -42,7 +42,8 @@ class MainActivity : BaseActivity(), IPickerListener {
 //                .setAction("Action", null).show()
 //            }
 //                .build()
-            DatePickerBuilder(this).setBeginDate(DateExtendUtil.getCurrentDate())
+            DatePickerBuilder(this)
+                .setBeginDate(DateExtendUtil.getCurrentDate())
                 .setEndDate(DateExtendUtil.getCurrentDate())
                 .setSingle(false)
                 .setRequestCode(111)
