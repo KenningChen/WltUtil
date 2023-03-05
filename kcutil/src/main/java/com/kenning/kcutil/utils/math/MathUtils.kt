@@ -3,6 +3,8 @@ package com.kenning.kcutil.utils.math
 import android.text.Editable
 import android.widget.EditText
 import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.*
 import java.util.regex.Pattern
 
 /**
@@ -129,6 +131,7 @@ private object MathUtils {
         s = s.replace("^(0+)".toRegex(), "")
         //数值字符串进行格式的方法，解决出现科学计数法的问题
         s = NumberFormat(s, default_DecimalDigit)
+
         return s
     }
 
@@ -183,49 +186,49 @@ private object MathUtils {
     }
 
     /**加法运算*/
-    fun JIA(values: Any?, vararg os: Any?): Double {
+    fun JIA(values: Any?, vararg os: Any?): String {
         var bd = BigDecimal.valueOf(ObjectToDouble(values))
         val s = os[0] as Array<Any>
         for (i in s.indices) {
             val d = ObjectToDouble(s[i])
             bd = bd.add(BigDecimal.valueOf(d))
         }
-        return bd.toDouble()
+        return bd.toString()
     }
 
     /**减法*/
-    fun JIAN(values: Any?, vararg os: Any?): Double {
+    fun JIAN(values: Any?, vararg os: Any?): String {
         var bd = BigDecimal.valueOf(ObjectToDouble(values))
         val s = os[0] as Array<Any>
         for (i in s.indices) {
             val d = ObjectToDouble(s[i])
             bd = bd.subtract(BigDecimal.valueOf(d))
         }
-        return bd.toDouble()
+        return bd.toString()
     }
 
     /**乘法*/
-    fun CHENG(valuse: Any?, vararg os: Any?): Double {
+    fun CHENG(valuse: Any?, vararg os: Any?): String {
         var bd = BigDecimal.valueOf(ObjectToDouble(valuse))
         val s = os[0] as Array<Any>
         for (i in 0 until s.size ) {
             val d = ObjectToDouble(s[i])
             if (d == 0.0) {
-                return 0.0
+                return "0"
             }
             bd = bd.multiply(BigDecimal.valueOf(d))
         }
-        return bd.toDouble()
+        return bd.toString()
     }
 
     /**double的除法*/
-    fun CHU(values: Any?, vararg os: Any?): Double {
+    fun CHU(values: Any?, vararg os: Any?): String {
         var bd = BigDecimal.valueOf(ObjectToDouble(values))
         val s = os[0] as Array<Any>
         for (i in s.indices) {
             val d = ObjectToDouble(s[i])
             if (d == 0.0) {
-                return 0.0
+                return "0"
             }
             bd = bd.divide(
                     BigDecimal.valueOf(d),
@@ -233,7 +236,7 @@ private object MathUtils {
                     BigDecimal.ROUND_HALF_UP
             )
         }
-        return bd.toDouble()
+        return bd.toString()
     }
 
 }
