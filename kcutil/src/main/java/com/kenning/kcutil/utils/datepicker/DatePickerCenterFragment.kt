@@ -148,6 +148,11 @@ class DatePickerCenterFragment : DialogFragment(R.layout.view_datepicker_center)
                 formatstr = "yyyy-MM"
             }
         }
+        if (mNonChange) {
+            type = "DD"
+            formatstr = "yyyy-MM-dd"
+        }
+
         control = PickerControl(this)
         control.type = type
 
@@ -185,6 +190,7 @@ class DatePickerCenterFragment : DialogFragment(R.layout.view_datepicker_center)
                     }
                     (startdate parseBy Date_Format.YMD)!! formatBy SimpleDateFormat(formatstr)
                 }
+            if (mNonChange) formatstr = "yyyy-MM-dd"
             val suc = (mViewModel.tagetFragment.value as IPickerListener).onDateChange(
                 code, time, ""
             )
