@@ -30,7 +30,7 @@ class DatePickerBuilder {
         iPickerListener = sourceFragment as IPickerListener
     }
 
-    constructor(activity: FragmentActivity){
+    constructor(activity: FragmentActivity) {
         this.activity = activity
         iPickerListener = activity as IPickerListener
         location = PickerControl.ShowLocation.BOTTOM
@@ -50,6 +50,8 @@ class DatePickerBuilder {
 
     var title = "开始日期"
 
+    var mNonChange = true
+
     fun setDateTitle(title: String): DatePickerBuilder {
         this.title = title
         return this
@@ -68,6 +70,11 @@ class DatePickerBuilder {
      */
     fun setEndDate(end: String): DatePickerBuilder {
         this.endDate = end
+        return this
+    }
+
+    fun setNeedChangeState(need:Boolean):DatePickerBuilder{
+        mNonChange = !need
         return this
     }
 
@@ -100,7 +107,9 @@ class DatePickerBuilder {
     fun setLoaction(location: PickerControl.ShowLocation): DatePickerBuilder {
         this.location = location
         //fragmentactivity为调用方时，仅支持下方弹出方式
-        if (activity != null) this.location = PickerControl.ShowLocation.BOTTOM
+        if (activity != null && location == PickerControl.ShowLocation.TOP) {
+            this.location = PickerControl.ShowLocation.BOTTOM
+        }
         return this
     }
 
@@ -117,6 +126,26 @@ class DatePickerBuilder {
 //        bundle.putFloat("alpha",alpha)
 //        bundle.putString("location",location.name)
         bundle.putInt("code", requestCode)
+        tagetFragment.arguments = bundle
+
+        mViewModel =
+            ViewModelProvider(
+                sourceFragment?.requireActivity() ?: activity as ViewModelStoreOwner,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(KCUtil.application!!)
+            ).get(PickerViewModel::class.java)
+
+        mViewModel.tagetFragment.value = iPickerListener
+
+
+        return tagetFragment
+    }
+
+    private fun buildCenter(): DatePickerCenterFragment {
+        val tagetFragment = DatePickerCenterFragment()
+        val bundle = Bundle()
+        bundle.putString("start", beginDate)
+        bundle.putInt("code", requestCode)
+        bundle.putBoolean("nonchange", mNonChange)
         tagetFragment.arguments = bundle
 
         mViewModel =
@@ -164,7 +193,7 @@ class DatePickerBuilder {
      * 该参数仅在[PickerControl.ShowLocation.TOP]时生效,且必须调用方是[Fragment],[FragmentActivity]时，
      * 仅支持[PickerControl.ShowLocation.BOTTOM]
      */
-    fun start(@IdRes containerViewId: Int=-1) {
+    fun start(@IdRes containerViewId: Int = -1) {
         if (location == PickerControl.ShowLocation.TOP) {
             if (containerViewId == -1) {
                 throw RuntimeException("请设置参数:containerViewId")
@@ -172,6 +201,11 @@ class DatePickerBuilder {
             val fm = sourceFragment!!.requireActivity().supportFragmentManager.beginTransaction()
             fm.add(containerViewId, build(), null)
                 .addToBackStack(null).commit()
+        } else if (location == PickerControl.ShowLocation.CENTER) {
+            buildCenter().show(
+                sourceFragment?.requireActivity()?.supportFragmentManager
+                    ?: activity!!.supportFragmentManager, null
+            )
         } else {
             //
             buildBottom().show(

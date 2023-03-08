@@ -54,6 +54,11 @@ object Date_Format {
     val sdf7 = SimpleDateFormat("yyyyMMdd")
 
     /**
+     * 日期格式8：yyyy-MM
+     */
+    val YM = SimpleDateFormat("yyyy-MM")
+
+    /**
      * 日期格式9：yyyy年MM月dd日
      */
     val sdf9 = SimpleDateFormat("yyyy年MM月dd日")

@@ -1,11 +1,13 @@
 package com.kenning.kcutil.utils.datepicker
 
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import cn.carbswang.android.numberpickerview.library.NumberPickerView
 import com.kenning.kcutil.R
 import com.kenning.kcutil.utils.date.DateExtendUtil
 import com.kenning.kcutil.utils.math.toInt_
+import com.kenning.kcutil.widget.SwitchImageView
 
 
 /**
@@ -16,7 +18,7 @@ import com.kenning.kcutil.utils.math.toInt_
 class PickerControl(var fragment: Fragment) {
 
     enum class ShowLocation {
-        TOP, BOTTOM
+        TOP, BOTTOM,CENTER
     }
 
     /**
@@ -61,6 +63,8 @@ class PickerControl(var fragment: Fragment) {
      * 结束日期的日期(天)
      */
     var currentDay_end = ""
+
+    var type = "DD"
 
     var iDatePickerBase = fragment as IDatePickerBase
     init {
@@ -242,10 +246,26 @@ class PickerControl(var fragment: Fragment) {
     }
 
     fun bindClick() {
+
         with(iDatePickerBase.mView) {
+            findViewById<SwitchImageView>(R.id.switchType)?.setOnSwitchListener {
+                if (it){
+                    type = "DD"
+                    findViewById<View>(R.id.dayonly).visibility = View.VISIBLE
+                }else {
+                    type = "MM"
+                    findViewById<View>(R.id.dayonly).visibility = View.GONE
+                }
+            }
+
+            if (type == "MM"){
+                findViewById<SwitchImageView>(R.id.switchType)?.performClick()
+            }
+
             //单日期
             kotlin.run {
-                findViewById<NumberPickerView>(R.id.yearonly).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.yearonly)?.setOnValueChangedListener {
+                        picker, oldVal, newVal ->
                     currentYear = years[newVal]
                     if (isLeayYear(currentYear.toInt_()) && currentMonth == "2") {
                         var oldsize = days.size
@@ -283,7 +303,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.monthonly).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.monthonly)?.setOnValueChangedListener {
+                        picker, oldVal, newVal ->
                     currentMonth = months[newVal].replace("月", "")
 
                     var oldsize = days.size
@@ -319,7 +340,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.dayonly).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.dayonly)?.setOnValueChangedListener { picker,
+                                                                                          oldVal, newVal ->
                     currentDay = days[newVal].replace("日", "")
 
                     //显示到日期控件上
@@ -335,7 +357,8 @@ class PickerControl(var fragment: Fragment) {
 
             //多日期的开始
             kotlin.run {
-                findViewById<NumberPickerView>(R.id.year).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.year)?.setOnValueChangedListener { picker,
+                                                                                       oldVal, newVal ->
                     currentYear = years[newVal]
                     if (isLeayYear(currentYear.toInt_()) && currentMonth == "2") {
                         var oldsize = days.size
@@ -372,7 +395,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.month).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.month)?.setOnValueChangedListener { picker,
+                                                                                        oldVal, newVal ->
                     currentMonth = months[newVal].replace("月", "")
                     var oldsize = days.size
                     getDaysArrayOnMonth(currentYear.toInt_(), currentMonth.toInt_())
@@ -408,7 +432,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.day).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.day)?.setOnValueChangedListener { picker,
+                                                                                      oldVal, newVal ->
                     currentDay = days[newVal].replace("日", "")
 
                     //显示到日期控件上
@@ -424,7 +449,8 @@ class PickerControl(var fragment: Fragment) {
 
             //多日期的结束
             kotlin.run {
-                findViewById<NumberPickerView>(R.id.year_end).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.year_end)?.setOnValueChangedListener {
+                        picker, oldVal, newVal ->
                     currentYear_end = years[newVal]
                     if (isLeayYear(currentYear_end.toInt_()) && currentMonth_end == "2") {
                         var oldsize = days.size
@@ -462,7 +488,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.month_end).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.month_end)?.setOnValueChangedListener {
+                        picker, oldVal, newVal ->
                     currentMonth_end = months[newVal].replace("月", "")
                     var oldsize = days.size
                     getDaysArrayOnMonth(currentYear_end.toInt_(), currentMonth_end.toInt_())
@@ -498,7 +525,8 @@ class PickerControl(var fragment: Fragment) {
                     )
                 }
 
-                findViewById<NumberPickerView>(R.id.day_end).setOnValueChangedListener { picker, oldVal, newVal ->
+                findViewById<NumberPickerView>(R.id.day_end)?.setOnValueChangedListener { picker,
+                                                                                          oldVal, newVal ->
                     currentDay_end = days[newVal].replace("日", "")
 
                     //显示到日期控件上
