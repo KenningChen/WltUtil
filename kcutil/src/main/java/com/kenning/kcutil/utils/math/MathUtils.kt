@@ -38,7 +38,7 @@ private object MathUtils {
     fun ObjectToDouble(o: Any?): Double {
         return try {
             if (o == null)  0.0
-            if (isNumeric(0)) {
+            if (isNumeric(o)) {
                 o.toString().toDouble()
             }else{
                 0.0
@@ -51,7 +51,7 @@ private object MathUtils {
     fun ObjectToFloat(o: Any?): Float {
         return try {
             if (o == null)  0f
-            if (isNumeric(0)) {
+            if (isNumeric(o)) {
                 o.toString().toFloat()
             }else 0f
         } catch (e: java.lang.Exception) {
@@ -62,7 +62,7 @@ private object MathUtils {
     fun ObjectToInt(o: Any?): Int {
         return try {
             if (o == null)  0
-            if (isNumeric(0)) {
+            if (isNumeric(o)) {
                 var result = o.toString().toDouble().toInt()
                 if (result == null) 0
                 else result
@@ -75,7 +75,7 @@ private object MathUtils {
     fun ObjectToLong(o: Any?): Long {
         return try {
             if (o == null)  0
-            if (isNumeric(0)) {
+            if (isNumeric(o)) {
                 o.toString().toDouble().toLong()
             }else 0
         } catch (e: java.lang.Exception) {
