@@ -478,8 +478,8 @@ class BaseDialog : Dialog {
             holder.setText(R.id.tvMsg, list[position] ?: "")
             holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
             holder.setOnclickListioner(R.id.tvMsg) {
-                itemClick?.invoke(holder.adapterPosition)
                 dismiss()
+                itemClick?.invoke(holder.adapterPosition)
             }
         }
 
