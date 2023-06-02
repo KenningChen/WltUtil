@@ -12,6 +12,9 @@ import com.kenning.kcutil.utils.other.ScreenUtil
  */
 class DialogTools {
 
+    /**是否支持协程*/
+    var supportSuspend = false
+
     var dialogWidthPre = 80
     var dialogMaxHeightPre = 60
     var botteomButtonHeight = 40f

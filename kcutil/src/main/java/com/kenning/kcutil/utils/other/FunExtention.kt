@@ -90,3 +90,7 @@ fun isChinese(c: Char): Boolean {
         else -> c.toByte().toChar() != c
     }// 根据字节码判断
 }
+
+fun kcBlock(block:()->Unit):()->Unit{
+    return block
+}

@@ -16,6 +16,7 @@ import com.kenning.kcutil.R;
  * Date : 2021/4/22 9:21 AM
  */
 public class SwitchImageView extends AppCompatImageView {
+
     /**
      * 记录点击状态 默认未点击
      */
@@ -44,38 +45,15 @@ public class SwitchImageView extends AppCompatImageView {
 
         setChecked(checked);
 
-//        if (checked) {
-//            if (mPressedDrawable != null)
-//                setImageDrawable(mPressedDrawable);
-//            else
-//                setImageBitmap(null);
-//        } else {
-//            if (mNormalDrawable != null)
-//                setImageDrawable(mNormalDrawable);
-//            else
-//                setImageBitmap(null);
-//        }
-
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                checked = !checked;
-//                if (checked) {
-//                    setImageDrawable(mPressedDrawable);
-//                } else {
-//                    setImageDrawable(mNormalDrawable);
-//                }
-//                if (listener!=null)
-//                listener.checkedChangeListener(checked);
+
                 setChecked(!checked);
             }
         });
 
     }
-
-//    public SwitchImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
 
     public void setOnSwitchListener(OnSwitchListener listener) {
         this.listener = listener;
@@ -92,6 +70,14 @@ public class SwitchImageView extends AppCompatImageView {
         setImageDrawable(mNormalDrawable);
     }
 
+    public void setOffDrawable(Drawable mNormalDrawable){
+        this.mNormalDrawable = mNormalDrawable;
+    }
+
+    public void setOnDrawable(Drawable mNormalDrawable){
+        this.mPressedDrawable = mNormalDrawable;
+    }
+
     public void setChecked(boolean checked) {
         this.checked = checked;
         if (checked) {
@@ -101,5 +87,9 @@ public class SwitchImageView extends AppCompatImageView {
         }
         if (listener!=null)
             listener.checkedChangeListener(checked);
+    }
+
+    public boolean getChecked(){
+        return checked;
     }
 }

@@ -110,4 +110,21 @@
         <attr name="checkstate" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="SwitchView">
+        <attr name="kc_checkOffBackground" format="color|reference" />
+        <attr name="kc_checkOnBackground" format="color|reference" />
+        <attr name="kc_checkstate" format="boolean" />
+        <attr name="kc_imageWidth" format="dimension|reference" />
+        <attr name="kc_imageHeight" format="dimension|reference" />
+        <attr name="kc_imagepadding" format="dimension|reference" />
+        <attr name="kc_imagepaddingleft" format="dimension|reference" />
+        <attr name="kc_imagepaddingright" format="dimension|reference" />
+        <attr name="kc_imagepaddingtop" format="dimension|reference" />
+        <attr name="kc_imagepaddingbottom" format="dimension|reference" />
+        <attr name="kc_textsize" format="dimension|reference" />
+        <attr name="kc_text" format="string" />
+        <attr name="kc_textColor" format="color|reference" />
+        <!--暂不支持-->
+        <attr name="kc_textViewLocation" format="boolean" />
+    </declare-styleable>
 </resources>

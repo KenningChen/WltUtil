@@ -257,6 +257,183 @@ open class EasyDialog(private var context: Context) {
         mIsReset = true
     }
 
+    suspend fun buildAsSuspend():Any?{
+        tools.supportSuspend = true
+        count++
+        mIsReset = false
+        if (title == null) {
+            this.title = "提示"
+        }
+
+       return if (Prompt) {
+            isCheckNoTishi = tools.getPreferences(
+                c = context,
+                getType = "EasyDialogTiShi",
+                getKey = tiShiKey,
+                defValue = "false"
+            )
+            if (isCheckNoTishi == "true") {
+                //直接执行
+                modes?.let {
+                    it[promptEventIndex].click?.invoke(null)
+                }
+            } else {
+                //跳转提示窗口
+                if (modes == null) {
+                    mBaseDialog = BaseDialog(
+                        context, title!!, msg,mGravity, cancelable,keyCancelAble, hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine
+                    )
+                        .setTitleColors(
+                            titleTextColor,
+                            titleBgColor
+                        ).setButtonMode(index = -1, prompt = true)
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else {
+                    if (spanned != null) {
+                        mBaseDialog =
+                            BaseDialog(
+                                context, title!!, spanned!!,mGravity, cancelable,keyCancelAble,
+                                hasButtons,
+                                hasTitle, hideTitleLine, hideAdapterLine, showPicture
+                            ).setButtonMode(
+                                index = promptEventIndex,
+                                prompt = true,
+                                modes = modes!!
+                            ).setTitleColors(titleTextColor, titleBgColor)
+                                .setDialogTool(tools)
+                        mBaseDialog?.showAsSuspend()
+                    } else {
+                        mBaseDialog =
+                            BaseDialog(
+                                context, title!!, msg,mGravity, cancelable,keyCancelAble,
+                                hasButtons, hasTitle,
+                                hideTitleLine, hideAdapterLine
+                            )
+                                .setButtonMode(
+                                    index = promptEventIndex,
+                                    prompt = true,
+                                    modes = modes!!
+                                ).setTitleColors(titleTextColor, titleBgColor)
+                                .setDialogTool(tools)
+                        mBaseDialog?.showAsSuspend()
+                    }
+                }
+            }
+        } else {
+            //跳转提示窗口
+            if (modes == null) {
+                if (adapter != null) {
+                    mBaseDialog = BaseDialog(
+                        context, title!!, adapter!!, cancelable,keyCancelAble, hasButtons,
+                        hasTitle, hideTitleLine, hideAdapterLine
+                    ).setTitleColors(
+                        titleTextColor,
+                        titleBgColor
+                    ).setButtonMode()
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else if (itemClick != null && strList.isNotEmpty()) {
+                    mBaseDialog = BaseDialog(
+                        context,
+                        title!!,
+                        strList,
+                        mGravity,
+                        cancelable,
+                        keyCancelAble,
+                        hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine,
+                        itemClick!!
+                    ).setTitleColors(titleTextColor, titleBgColor).setButtonMode()
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else if (spanned != null) {
+                    mBaseDialog = BaseDialog(
+                        context, title!!, spanned!!,mGravity, cancelable,keyCancelAble, hasButtons,
+                        hasTitle, hideTitleLine, hideAdapterLine, showPicture
+                    ).setTitleColors(
+                        titleTextColor,
+                        titleBgColor
+                    ).setButtonMode()
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else {
+                    mBaseDialog = BaseDialog(
+                        context, title!!, msg,mGravity, cancelable,keyCancelAble, hasButtons,
+                        hasTitle, hideTitleLine, hideAdapterLine
+                    ).setTitleColors(
+                        titleTextColor,
+                        titleBgColor
+                    ).setButtonMode()
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                }
+            } else {
+                if (adapter != null) {
+                    mBaseDialog = BaseDialog(
+                        context,
+                        title!!,
+                        adapter!!,
+                        cancelable,
+                        keyCancelAble,
+                        hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine
+                    ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else if (itemClick != null && strList.isNotEmpty()) {
+                    mBaseDialog = BaseDialog(
+                        context,
+                        title!!,
+                        strList,
+                        mGravity,
+                        cancelable,
+                        keyCancelAble,
+                        hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine,
+                        itemClick!!
+                    ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else if (spanned != null) {
+                    mBaseDialog = BaseDialog(
+                        context,
+                        title!!,
+                        spanned!!,
+                        mGravity,
+                        cancelable,
+                        keyCancelAble,
+                        hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine,
+                        showPicture
+                    ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                } else {
+                    mBaseDialog = BaseDialog(
+                        context,
+                        title!!,
+                        msg,
+                        mGravity,
+                        cancelable,
+                        keyCancelAble,
+                        hasButtons,
+                        hasTitle,
+                        hideTitleLine, hideAdapterLine
+                    ).setButtonMode(modes = modes!!).setTitleColors(titleTextColor, titleBgColor)
+                        .setDialogTool(tools)
+                    mBaseDialog?.showAsSuspend()
+                }
+            }
+        }
+    }
+
     fun build() {
         count++
         mIsReset = false

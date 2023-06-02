@@ -15,6 +15,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.kenning.kcutil.R
 import com.kenning.kcutil.utils.math.toInt_
@@ -26,6 +28,8 @@ import com.kenning.kcutil.utils.recyclerviewextend.RecycleViewDivider
 import com.kenning.kcutil.widget.SwitchImageView
 import com.kenning.kcutil.widget.basicview.BackGroundTextView
 import kotlinx.android.synthetic.main.easydialog.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * Description :
@@ -34,9 +38,12 @@ import kotlinx.android.synthetic.main.easydialog.*
  * Date : 2021/10/15
  */
 class BaseDialog : Dialog {
+    private val mSubscribe = Subscribe<Any?>()
+    private var mResult:Any? = null
+
     private var mContext: Context? = null
 
-    private var title:Any = ""
+    private var title: Any = ""
 
     private var adapter: RecyclerView.Adapter<*>? = null
 
@@ -200,8 +207,9 @@ class BaseDialog : Dialog {
             picture.visibility = View.VISIBLE
             picture.setImageDrawable(getDrawableResource(tools.errorTitlePic))
         }
-        (findViewById<View>(R.id.tvDialogName) as TextView).text = if (title is String) title.toString()
-        else title as Spanned
+        (findViewById<View>(R.id.tvDialogName) as TextView).text =
+            if (title is String) title.toString()
+            else title as Spanned
 
         val params = window!!.attributes
         params.width = tools.dialogWidth()
@@ -354,8 +362,14 @@ class BaseDialog : Dialog {
                 button.text = item.text
                 button.setOnClickListener {
                     if (Prompt && promptEventIndex == it.tag.toInt_()) {
-                        tools.setPreferences(context, "EasyDialogTiShi", tools.promptTag, isCheckNoTishi)
+                        tools.setPreferences(
+                            context,
+                            "EasyDialogTiShi",
+                            tools.promptTag,
+                            isCheckNoTishi
+                        )
                     }
+                    mResult = (it as TextView).text.toString()
                     item.click?.invoke(this) ?: dismiss()
                 }
                 button.setTextColor(getColorResource(item.textcolor))
@@ -388,8 +402,14 @@ class BaseDialog : Dialog {
 
             button.setOnClickListener {
                 if (Prompt) {
-                    tools.setPreferences(context, "EasyDialogTiShi", tools.promptTag, "$isCheckNoTishi")
+                    tools.setPreferences(
+                        context,
+                        "EasyDialogTiShi",
+                        tools.promptTag,
+                        "$isCheckNoTishi"
+                    )
                 }
+                mResult = (it as TextView).text.toString()
                 dismiss()
             }
             layoutButton.addView(button)
@@ -458,7 +478,7 @@ class BaseDialog : Dialog {
                     holder.getView<SwitchImageView>(R.id.switchView).performClick()
                 }
                 if (tools.promptMsg.isNotEmpty())
-                holder.setText(R.id.msgTag,tools.promptMsg)
+                    holder.setText(R.id.msgTag, tools.promptMsg)
             }
         }
 
@@ -478,8 +498,8 @@ class BaseDialog : Dialog {
             holder.setText(R.id.tvMsg, list[position] ?: "")
             holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
             holder.setOnclickListioner(R.id.tvMsg) {
-                dismiss()
                 itemClick?.invoke(holder.adapterPosition)
+                dismiss()
             }
         }
 
@@ -494,5 +514,29 @@ class BaseDialog : Dialog {
     override fun onBackPressed() {
         if (keyCancelAble)
             super.onBackPressed()
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        mSubscribe.post(mResult)
+    }
+
+    suspend fun showAsSuspend() = suspendCoroutine<Any?> {
+        mSubscribe.onSubscribe { value ->
+            it.resume(value)
+        }
+        show()
+    }
+
+    internal class Subscribe<T> {
+        private var mCallback: (T) -> Unit = {}
+
+        fun post(value: T) {
+            mCallback(value)
+        }
+
+        fun onSubscribe(block: (T) -> Unit) {
+            mCallback = block
+        }
     }
 }
