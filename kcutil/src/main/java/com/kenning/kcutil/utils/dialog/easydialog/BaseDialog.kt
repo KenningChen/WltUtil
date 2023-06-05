@@ -76,7 +76,7 @@ class BaseDialog : Dialog {
 
     private var keyCancelAble = true
 
-    private var mGravity = Gravity.CENTER
+    private var mGravity = Gravity.LEFT or Gravity.CENTER
 
     constructor(
         mContext: Context,
@@ -469,6 +469,10 @@ class BaseDialog : Dialog {
                 layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
                 holder.getView<TextView>(R.id.tvMsg).layoutParams = layoutParams
                 holder.getView<TextView>(R.id.tvMsg).gravity = Gravity.RIGHT
+            } else {
+                layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+                holder.getView<TextView>(R.id.tvMsg).layoutParams = layoutParams
+                holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
             }
             if (Prompt) {
                 holder.getView<SwitchImageView>(R.id.switchView).setOnSwitchListener {

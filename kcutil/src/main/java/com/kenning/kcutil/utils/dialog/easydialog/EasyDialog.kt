@@ -66,7 +66,7 @@ open class EasyDialog(private var context: Context) {
     /**是否已经执行过初始化*/
     private var mIsReset = false
 
-    private var mGravity = Gravity.CENTER
+    private var mGravity = Gravity.LEFT or Gravity.CENTER
 
     fun getBaseDialog(): BaseDialog? {
         return mBaseDialog
@@ -137,7 +137,7 @@ open class EasyDialog(private var context: Context) {
     }
 
     @JvmOverloads
-    fun setContentMsg(msg: String?,gravity:Int=Gravity.CENTER): EasyDialog {
+    fun setContentMsg(msg: String?,gravity:Int=Gravity.LEFT or Gravity.CENTER): EasyDialog {
         reSetDefault()
         mGravity = gravity
         this.msg = msg ?: ""
@@ -146,7 +146,7 @@ open class EasyDialog(private var context: Context) {
     }
 
     @JvmOverloads
-    fun setContentMsg(msg: Spanned,gravity:Int=Gravity.CENTER): EasyDialog {
+    fun setContentMsg(msg: Spanned,gravity:Int=Gravity.LEFT or Gravity.CENTER): EasyDialog {
         reSetDefault()
         mGravity = gravity
         this.spanned = msg
