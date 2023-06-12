@@ -188,4 +188,8 @@ class SwitchView @JvmOverloads constructor(
         mSwitchView.setOnSwitchListener(listener)
     }
 
+    fun setChecked(checked:Boolean){
+        mSwitchView.checked = checked
+    }
+
 }
