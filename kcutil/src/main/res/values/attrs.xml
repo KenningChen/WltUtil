@@ -124,6 +124,7 @@
         <attr name="kc_textsize" format="dimension|reference" />
         <attr name="kc_text" format="string" />
         <attr name="kc_textColor" format="color|reference" />
+        <attr name="kc_textPaddingRight" format="dimension|reference" />
         <!--暂不支持-->
         <attr name="kc_textViewLocation" format="boolean" />
     </declare-styleable>

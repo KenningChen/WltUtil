@@ -40,6 +40,8 @@ class SwitchView @JvmOverloads constructor(
     private var mImageWidth = 40f
     private var mImageHeight = 40f
 
+    private var textPaddingRight = 2f
+
     private var mText = ""
     private var mTextSize = 0f
     private var mTextColor = -1
@@ -66,6 +68,7 @@ class SwitchView @JvmOverloads constructor(
         mTextSize = typedArray.getDimension(R.styleable.SwitchView_kc_textsize, 10f)
         mImageWidth = typedArray.getDimension(R.styleable.SwitchView_kc_imageWidth, 40f)
         mImageHeight = typedArray.getDimension(R.styleable.SwitchView_kc_imageHeight, 40f)
+        textPaddingRight = typedArray.getDimension(R.styleable.SwitchView_kc_textPaddingRight, 2f)
         mNormalDrawable = typedArray.getDrawable(R.styleable.SwitchView_kc_checkOffBackground)
         mPressedDrawable = typedArray.getDrawable(R.styleable.SwitchView_kc_checkOnBackground)
         checked = typedArray.getBoolean(R.styleable.SwitchView_kc_checkstate, false)
@@ -169,7 +172,7 @@ class SwitchView @JvmOverloads constructor(
         it.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize)
         it.setTextColor(mTextColor)
         it.text = mText
-        val padding = dip2px(5f)
+        val padding = dip2px(textPaddingRight)
         it.setPadding(padding, 0, 0, 0)
     }
 
