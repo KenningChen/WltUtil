@@ -137,7 +137,7 @@ open class EasyDialog(private var context: Context) {
     }
 
     @JvmOverloads
-    fun setContentMsg(msg: String?,gravity:Int=Gravity.LEFT or Gravity.CENTER): EasyDialog {
+    fun setContentMsg(msg: String?,gravity:Int=/*Gravity.LEFT or*/ Gravity.CENTER): EasyDialog {
         reSetDefault()
         mGravity = gravity
         this.msg = msg ?: ""
@@ -146,7 +146,7 @@ open class EasyDialog(private var context: Context) {
     }
 
     @JvmOverloads
-    fun setContentMsg(msg: Spanned,gravity:Int=Gravity.LEFT or Gravity.CENTER): EasyDialog {
+    fun setContentMsg(msg: Spanned,gravity:Int=/*Gravity.LEFT or */Gravity.CENTER): EasyDialog {
         reSetDefault()
         mGravity = gravity
         this.spanned = msg
