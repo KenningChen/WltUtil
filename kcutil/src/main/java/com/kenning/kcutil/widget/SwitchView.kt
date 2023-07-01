@@ -18,7 +18,6 @@ import com.kenning.kcutil.utils.other.ScreenUtil.dip2px
 import com.kenning.kcutil.utils.other.getColorResource
 import com.kenning.kcutil.widget.SwitchImageView.OnSwitchListener
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 /**
  *Description :类checkbox组合布局
@@ -192,4 +191,7 @@ class SwitchView @JvmOverloads constructor(
         mSwitchView.checked = checked
     }
 
+    fun getChecked(): Boolean {
+        return mSwitchView.checked
+    }
 }
