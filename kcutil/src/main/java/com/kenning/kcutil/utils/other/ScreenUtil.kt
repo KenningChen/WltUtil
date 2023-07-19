@@ -50,14 +50,18 @@ object ScreenUtil {
     fun getScreenWidth(): Int {
         return KCUtil.application?.resources?.displayMetrics?.widthPixels?:-1
     }
-
-
 }
 
 fun View.getLocationWidth():Int{
     val location = intArrayOf(0,0)
     this.getLocationOnScreen(location)
     return location[0]
+}
+
+fun View.getLocationHeight2():Int{
+    val location = intArrayOf(0,0)
+    this.getLocationOnScreen(location)
+    return location[1]
 }
 
 fun View.getLocationHeight():Int{
