@@ -81,6 +81,11 @@ open class EasyDialog(private var context: Context) {
         return this
     }
 
+    fun setResultType(clazz: Class<*>): EasyDialog{
+        tools.resultType = clazz
+        return this
+    }
+
     fun setTitle(title: String): EasyDialog {
         reSetDefault()
         this.title = title

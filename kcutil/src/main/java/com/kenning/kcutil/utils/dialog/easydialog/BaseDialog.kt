@@ -503,6 +503,7 @@ class BaseDialog : Dialog {
             holder.getView<TextView>(R.id.tvMsg).gravity = mGravity
             holder.setOnclickListioner(R.id.tvMsg) {
                 itemClick?.invoke(holder.adapterPosition)
+                mResult = list[holder.adapterPosition]?:""
                 dismiss()
             }
         }

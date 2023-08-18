@@ -36,6 +36,9 @@ class DialogTools {
 
     var errorTitlePic = -1
 
+    /**协程对话框时,返回结果类型*/
+    var resultType:Class<*> = String::class.java
+
     /**
      * 对话框宽度
      * -1为内部默认值
@@ -63,6 +66,8 @@ class DialogTools {
      * 底部按钮高度
      */
     fun buttonHeight():Int = ScreenUtil.dip2px(botteomButtonHeight)
+
+    fun resultType():Class<*> = resultType
 
     /**
      * 控件各个边角的圆半径

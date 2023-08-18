@@ -8,21 +8,32 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.kenning.base.BaseActivity
 import com.kenning.kcutil.databinding.ActivityMainBinding
 import com.kenning.kcutil.utils.date.DateExtendUtil
+import com.kenning.kcutil.utils.date.Date_Format
+import com.kenning.kcutil.utils.date.formatBy
 import com.kenning.kcutil.utils.datepicker.DatePickerBuilder
 import com.kenning.kcutil.utils.datepicker.IPickerListener
+import com.kenning.kcutil.utils.datepicker.PickerControl
 import com.kenning.kcutil.utils.dialog.easydialog.ButtonMode
 import com.kenning.kcutil.utils.dialog.easydialog.EasyDialog
+import com.kenning.kcutil.utils.other.PermissionGroup
+import com.kenning.kcutil.utils.other.ToastUtil
+import com.kenning.kcutil.utils.other.setHook
 import com.reduxdemo.ReduxTestAct
+import kotlinx.coroutines.launch
+import java.util.Date
 
 class MainActivity : BaseActivity(), IPickerListener {
 
-//    private lateinit var appBarConfiguration: AppBarConfiguration
+    //    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,59 +41,64 @@ class MainActivity : BaseActivity(), IPickerListener {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val da = DateExtendUtil.getBalanceDateByDay(
+            Date().formatBy(Date_Format.YMD),
+            Date_Format.YMD,
+            5
+        )
+        Log.e("kenning", da)
 //        supportFragmentManager.beginTransaction().add(R.id.fcvMain, FirstFragment(),"first").commit()
-        loadRootFragment(binding.fcvMain.id,FirstFragment())
+        loadRootFragment(binding.fcvMain.id, FirstFragment())
 
         binding.fab.setOnClickListener { view ->
-//            EasyDialog(this).setTitle("地对地导弹地对地导弹的地对地导弹地对地导弹的111地对地导弹地对地导弹的地对地导弹地对地导弹的111")
-//                .setArray(arrayOf("1","2","3","4","5","6","7",
-//                "8")){
-//                            Snackbar.make(view, "$it", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//            }
-//                .build()
-            DatePickerBuilder(this)
-                .setBeginDate(DateExtendUtil.getCurrentDate())
-                .setEndDate(DateExtendUtil.getCurrentDate())
-                .setSingle(false)
-                .setRequestCode(111)
-//                .setLoaction(PickerControl.ShowLocation.BOTTOM)
-                .start(R.id.fcvMain)
-//            startActivity(Intent(this, ReduxTestAct::class.java))
-//            val title = """
-//                <b>提示</b>
-//            """.trimIndent()
-//            EasyDialog(this).setTitle(Html.fromHtml(title)).setContentMsg(CMApiWarnToast(this))
-//                .setButtonMode(
-//                    ButtonMode("测试"),
-//                    ButtonMode("测试"),
-//                    ButtonMode("测试")
-//                ).setBottomOption(1).setDialogReact(75,heightPer=90)
-//                .build()
-//            val dialog = EasyDialog(this)
-//            dialog.setTitle("ddd")
-//                .showPicture(R.drawable.ic_launcher_background)
-//                .setArray(arrayOf("1","2","3","4","5","6","7",
-//                    "8","1","2","3","4","5","6","7",
-//                    "8")){
-//                    Snackbar.make(view, "$it", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show()
-//                }.setButtonMode(
-//                    ButtonMode("测试"),
-//                    ButtonMode("测试"),
-//                    ButtonMode("show other"){
-//                        it?.dismiss()
-//                        EasyDialog(this).setContentMsg("other dialog").setButtonMode(
-//                            ButtonMode("测试"){
-//                                it?.dismiss()
-//                                dialog.build()
-//                            }
-//                        ).withPrompt(promptMsg = "哈哈").build()
+            lifecycleScope.launch {
+//                val result = EasyDialog(this@MainActivity).setContentMsg("测试")
+//                    .setButtonMode(
+//                        ButtonMode("取消"),
+//                        ButtonMode("按钮1"),
+//                        ButtonMode("确定")
+//                    )
+//                    .buildAsSuspend()
+//
+//                when(result.toString()){
+//                    "取消"->{
+//                        ToastUtil.show("12321")
 //                    }
-//                ).setBottomOption(1).setDialogReact(90,heightPer=90).cancelAble(false).keyCancelAble(false)
-//                .build()
+//                    "按钮1"->{
+//                        ToastUtil.show("333")
+//                    }
+//                    "确定"->{
+//                        ToastUtil.show("12")
+//                    }
+//                    else -> {
+//                        ToastUtil.show("hhh")
+//                    }
+//                }
+//                var index = 0
+//                val result = EasyDialog(this@MainActivity).setArray(arrayOf("测试", "天才")) {
+//                    index = it
+//                }
+//                    .needNoNButtons(true)
+//                    .buildAsSuspend()
+//
+//                Log.e("kenning", "2")
+//                ToastUtil.show("${index}")
+                val str = """
+            确认取消上架该商品吗?
+            为避免无法快速找到该商品,取消后请将该商品放回原下架货位
+        """.trimIndent()
+                EasyDialog(this@MainActivity).setContentMsg(str,Gravity.CENTER)
+                    .build()
+            }
         }
+        binding.tagswitch.setOnSwitchSuspendListener({
+            val result = EasyDialog(this@MainActivity).setContentMsg("测试")
+                .buildAsSuspend()
+            true
+        }) {
+            ToastUtil.show("成功了")
+        }
+        binding.tagswitch.setHook(PermissionGroup.PHONE.name,"没有电话权限,无法执行该功能,请先去设置权限")
     }
 
     override fun closeAct() {
@@ -117,15 +133,17 @@ class MainActivity : BaseActivity(), IPickerListener {
 
     }
 
-    override fun onDateChange(requestcode: Int, start: String, end: String):Boolean {
-        binding.tag11.text = "$start-$end"
+    override fun onDateChange(requestcode: Int, start: String, end: String): Boolean {
+        binding.tag11.text = start
         return true
     }
 
 }
+
 //
 fun CMApiWarnToast(context: Activity/*, clazz: Class<*>*/): SpannableStringBuilder {
-    val mMsg2 = "检测到您对接的版本为财贸21.5及以上，请确保已填写管家婆【应用中心】-【移动管理】-【服务器设置】中的管家婆地址信息。否则，APP功能将无法正常使用。\n点击查看设置说明"
+    val mMsg2 =
+        "检测到您对接的版本为财贸21.5及以上，请确保已填写管家婆【应用中心】-【移动管理】-【服务器设置】中的管家婆地址信息。否则，APP功能将无法正常使用。\n点击查看设置说明"
 
     val style = SpannableStringBuilder()
     style.append(mMsg2)
