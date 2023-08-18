@@ -44,7 +44,7 @@ class FragmentHelper(val fragmentManager_: FragmentManager, val isSuper: Boolean
                 .show(show)
                 .commit()
         }
-        previousFragment = show
+        previousFragment = show?:fragment
     }
 
     /**
