@@ -91,11 +91,11 @@ class MainActivity : BaseActivity(), IPickerListener {
                     .build()
             }
         }
-        binding.tagswitch.setOnSwitchSuspendListener({
+        binding.tagswitch.setOnSwitchSuspendListener/*({
             val result = EasyDialog(this@MainActivity).setContentMsg("测试")
                 .buildAsSuspend()
             true
-        }) {
+        }) */{
             ToastUtil.show("成功了")
         }
         binding.tagswitch.setHook(PermissionGroup.PHONE.name,"没有电话权限,无法执行该功能,请先去设置权限")

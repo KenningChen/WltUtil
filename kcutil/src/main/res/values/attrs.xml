@@ -108,6 +108,7 @@
         <attr name="checkOffBackground" format="color|reference" />
         <attr name="checkOnBackground" format="color|reference" />
         <attr name="checkstate" format="boolean" />
+        <attr name="autoSrcChange" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SwitchView">
@@ -125,6 +126,7 @@
         <attr name="kc_text" format="string" />
         <attr name="kc_textColor" format="color|reference" />
         <attr name="kc_textPaddingRight" format="dimension|reference" />
+        <attr name="kc_autoSrcChange" format="boolean" />
         <!--暂不支持-->
         <attr name="kc_textViewLocation" format="boolean" />
     </declare-styleable>

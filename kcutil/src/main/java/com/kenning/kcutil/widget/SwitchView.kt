@@ -46,6 +46,7 @@ class SwitchView @JvmOverloads constructor(
     private var mTextColor = -1
 
     private var checked = false
+    private var autoSrcChange = true
 
     private lateinit var mSwitchView: SwitchImageView
 
@@ -71,12 +72,10 @@ class SwitchView @JvmOverloads constructor(
         mNormalDrawable = typedArray.getDrawable(R.styleable.SwitchView_kc_checkOffBackground)
         mPressedDrawable = typedArray.getDrawable(R.styleable.SwitchView_kc_checkOnBackground)
         checked = typedArray.getBoolean(R.styleable.SwitchView_kc_checkstate, false)
+        autoSrcChange = typedArray.getBoolean(R.styleable.SwitchView_kc_autoSrcChange, true)
         mText = typedArray.getString(R.styleable.SwitchView_kc_text) ?: ""
         mTextColor = typedArray.getColor(
-            R.styleable.SwitchView_kc_textColor, getColorResource(
-                R.color
-                    .color_333333
-            )
+            R.styleable.SwitchView_kc_textColor, getColorResource(R.color.color_333333)
         )
 
         typedArray.recycle()
@@ -92,14 +91,14 @@ class SwitchView @JvmOverloads constructor(
                     (context as LifecycleOwner).lifecycleScope.launch {
                         var result = dispactchEvent!!()
                         if (result) {
-                            mSwitchView.setChecked(!mSwitchView.checked)
+                            mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
                         }
                     }
                 }else{
-                    mSwitchView.setChecked(!mSwitchView.checked)
+                    mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
                 }
             }catch (e:Exception) {
-                mSwitchView.setChecked(!mSwitchView.checked)
+                mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
             }
         }
     }
@@ -136,14 +135,14 @@ class SwitchView @JvmOverloads constructor(
                         (context as LifecycleOwner).lifecycleScope.launch {
                             var result = dispactchEvent!!()
                             if (result) {
-                                mSwitchView.setChecked(!mSwitchView.checked)
+                                mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
                             }
                         }
                     }else{
-                        mSwitchView.setChecked(!mSwitchView.checked)
+                        mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
                     }
                 }catch (e:Exception) {
-                    mSwitchView.setChecked(!mSwitchView.checked)
+                    mSwitchView.setChecked(!mSwitchView.checked,autoSrcChange)
                 }
             }
         }

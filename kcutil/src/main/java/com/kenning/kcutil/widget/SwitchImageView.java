@@ -22,6 +22,12 @@ public class SwitchImageView extends AppCompatImageView {
      */
     private boolean checked = false;
 
+    /**
+     * 是否被点击后，改变资源文件，如果为fale，则仅执行系统点击事件，不改变src的资源图片
+     * @默认为true
+     */
+    private boolean autoSrcChange = true;
+
     private Drawable mNormalDrawable;
 
     private Drawable mPressedDrawable;
@@ -41,6 +47,7 @@ public class SwitchImageView extends AppCompatImageView {
         mNormalDrawable = a.getDrawable(R.styleable.SwitchImageView_checkOffBackground);
         mPressedDrawable = a.getDrawable(R.styleable.SwitchImageView_checkOnBackground);
         checked = a.getBoolean(R.styleable.SwitchImageView_checkstate, false);
+        autoSrcChange = a.getBoolean(R.styleable.SwitchImageView_autoSrcChange, true);
         a.recycle();
 
         setChecked(checked);
@@ -49,7 +56,7 @@ public class SwitchImageView extends AppCompatImageView {
             @Override
             public void onClick(View v) {
 
-                setChecked(!checked);
+                setChecked(!checked,true);
             }
         });
 
@@ -76,6 +83,24 @@ public class SwitchImageView extends AppCompatImageView {
 
     public void setOnDrawable(Drawable mNormalDrawable){
         this.mPressedDrawable = mNormalDrawable;
+    }
+
+    /**
+     *
+     * @param checked
+     * @param isFinger 是否是手指触发的该方法（true 不改变资源文件）
+     */
+    public void setChecked(boolean checked,boolean isFinger) {
+        if (isFinger) {
+            this.checked = checked;
+            if (checked) {
+                setImageDrawable(mPressedDrawable);
+            } else {
+                setImageDrawable(mNormalDrawable);
+            }
+        }
+        if (listener!=null)
+            listener.checkedChangeListener(checked);
     }
 
     public void setChecked(boolean checked) {

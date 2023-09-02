@@ -49,6 +49,7 @@
         app:kc_checkstate="false"
         app:kc_textsize="10sp"
         app:kc_text="切换状态"
+        app:kc_autoSrcChange="false"
         app:kc_textColor="@color/colorAccent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
