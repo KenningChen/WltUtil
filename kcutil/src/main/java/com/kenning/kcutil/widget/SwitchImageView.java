@@ -52,13 +52,7 @@ public class SwitchImageView extends AppCompatImageView {
 
         setChecked(checked);
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                setChecked(!checked,true);
-            }
-        });
+        setOnClickListener(v -> setChecked(!checked,autoSrcChange));
 
     }
 
@@ -112,6 +106,20 @@ public class SwitchImageView extends AppCompatImageView {
         }
         if (listener!=null)
             listener.checkedChangeListener(checked);
+    }
+
+    /**
+     * 禁止点击事件改变图标的时候，此方法生效 且 不建议使用setChecked 因为会同时触发点击事件
+     * @param checked
+     */
+    public void switchImageState(boolean checked){
+        if (autoSrcChange){
+            if (checked) {
+                setImageDrawable(mPressedDrawable);
+            } else {
+                setImageDrawable(mNormalDrawable);
+            }
+        }
     }
 
     public boolean getChecked(){

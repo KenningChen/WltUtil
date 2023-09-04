@@ -193,4 +193,18 @@ class SwitchView @JvmOverloads constructor(
     fun getChecked(): Boolean {
         return mSwitchView.checked
     }
+
+    /**
+     * 禁止点击事件改变图标的时候，此方法生效 且 不建议使用setChecked 因为会同时触发点击事件
+     * @param checked
+     */
+    fun switchImageState(checked: Boolean) {
+        if (autoSrcChange) {
+            if (checked) {
+                mSwitchView.setImageDrawable(mPressedDrawable)
+            } else {
+                mSwitchView.setImageDrawable(mNormalDrawable)
+            }
+        }
+    }
 }
