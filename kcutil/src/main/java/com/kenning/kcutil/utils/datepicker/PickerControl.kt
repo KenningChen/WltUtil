@@ -141,6 +141,26 @@ class PickerControl(var fragment: Fragment) {
         }
     }
 
+    fun getDaysArrayOnMonth_EveryTime(year: Int, month: Int): ArrayList<String> {
+        val days = ArrayList<String>()
+        var index = 0
+        var range: IntRange
+        when (month) {
+            1, 3, 5, 7, 8, 10, 12 -> range = 1 until 32
+            2 -> range = if (isLeayYear(year)) 1 until 30 else 1 until 29
+            else -> range = 1 until 31
+        }
+
+        for (day in range) {
+            if (day > 9)
+                days.add("${day}日")//如：10月
+            else
+                days.add("0${day}日")//如：01月
+            index++
+        }
+        return days
+    }
+
     /**设置当前日期*/
     fun setCurrentDate(isRefrsh:Boolean = false) {
 
@@ -357,12 +377,13 @@ class PickerControl(var fragment: Fragment) {
 
             //多日期的开始
             kotlin.run {
+                var days = getDaysArrayOnMonth_EveryTime(currentYear.toInt_(), currentMonth.toInt_())
                 findViewById<NumberPickerView>(R.id.year)?.setOnValueChangedListener { picker,
                                                                                        oldVal, newVal ->
                     currentYear = years[newVal]
                     if (isLeayYear(currentYear.toInt_()) && currentMonth == "2") {
                         var oldsize = days.size
-                        getDaysArrayOnMonth(currentYear.toInt_(), currentMonth.toInt_())
+                        days = getDaysArrayOnMonth_EveryTime(currentYear.toInt_(), currentMonth.toInt_())
                         var newsize = days.size
                         if (newsize!=oldsize)/*{
                             findViewById<NumberPickerView>(R.id.day).displayedValues = days.toTypedArray()
@@ -399,7 +420,7 @@ class PickerControl(var fragment: Fragment) {
                                                                                         oldVal, newVal ->
                     currentMonth = months[newVal].replace("月", "")
                     var oldsize = days.size
-                    getDaysArrayOnMonth(currentYear.toInt_(), currentMonth.toInt_())
+                    days = getDaysArrayOnMonth_EveryTime(currentYear.toInt_(), currentMonth.toInt_())
                     var newsize = days.size
                     if (newsize!=oldsize)/*{
                         findViewById<NumberPickerView>(R.id.day).displayedValues = days.toTypedArray()
@@ -449,12 +470,13 @@ class PickerControl(var fragment: Fragment) {
 
             //多日期的结束
             kotlin.run {
+                var days = getDaysArrayOnMonth_EveryTime(currentYear_end.toInt_(), currentMonth_end.toInt_())
                 findViewById<NumberPickerView>(R.id.year_end)?.setOnValueChangedListener {
                         picker, oldVal, newVal ->
                     currentYear_end = years[newVal]
                     if (isLeayYear(currentYear_end.toInt_()) && currentMonth_end == "2") {
                         var oldsize = days.size
-                        getDaysArrayOnMonth(currentYear_end.toInt_(), currentMonth_end.toInt_())
+                        days = getDaysArrayOnMonth_EveryTime(currentYear_end.toInt_(), currentMonth_end.toInt_())
                         var newsize = days.size
                         if (newsize!=oldsize)/*{
                             findViewById<NumberPickerView>(R.id.day_end).displayedValues =
@@ -492,7 +514,7 @@ class PickerControl(var fragment: Fragment) {
                         picker, oldVal, newVal ->
                     currentMonth_end = months[newVal].replace("月", "")
                     var oldsize = days.size
-                    getDaysArrayOnMonth(currentYear_end.toInt_(), currentMonth_end.toInt_())
+                    days = getDaysArrayOnMonth_EveryTime(currentYear_end.toInt_(), currentMonth_end.toInt_())
                     var newsize = days.size
                     if (newsize!=oldsize)/*{
                         findViewById<NumberPickerView>(R.id.day_end).displayedValues =
