@@ -19,6 +19,11 @@ class FragmentHelper(val fragmentManager_: FragmentManager, val isSuper: Boolean
     private var previousFragment: Fragment? = null
 
     /**
+     * 获取当前fragment
+     */
+    fun getCurrentFragmen() = previousFragment
+
+    /**
      * 如果指定fragment不存在,添加一个,如果存在,则直接显示
      */
     fun addFragment(containerId: Int = -1, fragment: Fragment) {
