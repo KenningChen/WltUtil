@@ -24,6 +24,23 @@ class FragmentHelper(val fragmentManager_: FragmentManager, val isSuper: Boolean
     fun getCurrentFragmen() = previousFragment
 
     /**
+     * 加载多个fragment, 并显示第一个fragment
+     * @param containerId Int 容器id
+     * @param fragments Array<out Fragment> 要加载的fragment集合
+     */
+    fun loadMultipleFragment(containerId: Int = -1,vararg fragments: Fragment){
+        fragments.forEach {
+            fragmentManager_.beginTransaction()
+                .add(containerId, it, it::class.java.simpleName)
+                .addToBackStack(null)
+                .commit()
+            previousFragment = it
+        }
+
+        showFragment(fragments.first()::class.java.simpleName)
+    }
+
+    /**
      * 如果指定fragment不存在,添加一个,如果存在,则直接显示
      */
     fun addFragment(containerId: Int = -1, fragment: Fragment) {
