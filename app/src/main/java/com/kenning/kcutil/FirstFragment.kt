@@ -40,8 +40,8 @@ class FirstFragment : BaseBusinessFragment(), IPickerListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            DatePickerBuilder(this).setBeginDate(DateExtendUtil.getCurrentDate())
-                .setEndDate(DateExtendUtil.getCurrentDate())
+            DatePickerBuilder(this).setBeginDate("2023-02-28")
+                .setEndDate("2024-02-29")
                 .setSingle(false)
                 .setRequestCode(111)
                 .setLoaction(PickerControl.ShowLocation.BOTTOM)
