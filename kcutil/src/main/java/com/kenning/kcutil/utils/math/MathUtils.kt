@@ -48,7 +48,7 @@ private object MathUtils {
     }
 
     /**判断是否为数字*/
-    fun isNumeric(str: Any?): Boolean {// 1,5
+    fun isNumeric(str: Any?): Boolean {
         try {
             if (str == null) return false
             var reg="^([+-]?)\\d*\\.?\\d+$"// number
@@ -131,7 +131,7 @@ private object MathUtils {
             val nf = java.text.NumberFormat.getInstance()
             nf.isGroupingUsed = false
             nf.maximumFractionDigits = scale
-            return nf.format(ObjectToDouble(s))
+            return nf.format(ObjectToDouble(s)).replace(",", ".")
         }else if (isNumeric(s)) {
             val nf = java.text.NumberFormat.getInstance()
             nf.isGroupingUsed = false
