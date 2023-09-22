@@ -128,12 +128,12 @@ private object MathUtils {
     private fun NumberFormat(str: String?, scale: Int): String {
         var s = str
         if (isNumeric_Outside(s)){
-            val nf = java.text.NumberFormat.getInstance()
+            val nf = NumberFormat.getInstance(Locale.forLanguageTag("es"))
             nf.isGroupingUsed = false
             nf.maximumFractionDigits = scale
             return nf.format(ObjectToDouble(s))
         }else if (isNumeric(s)) {
-            val nf = java.text.NumberFormat.getInstance()
+            val nf = NumberFormat.getInstance(Locale.CHINA)
             nf.isGroupingUsed = false
             nf.maximumFractionDigits = scale
             return nf.format(ObjectToDouble(s))
