@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,7 @@ class SwitchView @JvmOverloads constructor(
 
     private var textPaddingRight = 2f
 
+    private var mTextView: TextView? = null
     private var mText = ""
     private var mTextSize = 0f
     private var mTextColor = -1
@@ -117,7 +119,8 @@ class SwitchView @JvmOverloads constructor(
 
         // 添加文本控件
         if (mText.isNotEmpty()) {
-            addView(createTextView())
+            mTextView = createTextView()
+            addView(mTextView)
         }
     }
 
@@ -184,6 +187,10 @@ class SwitchView @JvmOverloads constructor(
     ) {
         this.dispactchEvent = dispactchEvent
         mSwitchView.setOnSwitchListener(listener)
+    }
+
+    fun setText(comment: String){
+        mTextView?.text = comment
     }
 
     fun setChecked(checked:Boolean){
