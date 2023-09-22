@@ -32,6 +32,10 @@ private object MathUtils {
     }
 
     private fun isNumeric_Outside(str: Any?): Boolean{
+        val lan = Locale.getDefault().language
+        if (lan == "es"){
+            return false
+        }
         try {
             if (str == null) return false
             var reg="^([+-]?)\\d*\\,?\\d+$"// number
