@@ -20,10 +20,31 @@ private object MathUtils {
     //BigDecimal.ROUND_CEILING  接近正无穷大的舍入模式 如果 BigDecimal 为正，则舍入行为与 ROUND_UP 相同  如果为负，则舍入行为与 ROUND_DOWN 相同  此舍入模式始终不会减少计算值
     //BigDecimal.ROUND_FLOOR    接近负无穷大的舍入模式
 
-    private val default_DecimalDigit = 8
+    private val default_DecimalDigit = 20
+
+
+    private fun formatNumber_Outside(str:String):String{
+        // 西班牙用逗号做小数
+        val nf: NumberFormat = NumberFormat.getInstance(Locale.forLanguageTag("es"))
+        val parsedNumber: Number? = nf.parse(str)
+        return if (parsedNumber == null) "0"
+        else parsedNumber.toString()
+    }
+
+    private fun isNumeric_Outside(str: Any?): Boolean{
+        try {
+            if (str == null) return false
+            var reg="^([+-]?)\\d*\\,?\\d+$"// number
+            var reg_zz="^([+|-]?\\d+(,{0}|,\\d+))[Ee]{1}([+|-]?\\d+)$"//
+            return Pattern.compile(reg).matcher(str.toString()).matches() ||
+                    Pattern.compile(reg_zz).matcher(str.toString()).matches()
+        } catch (e: Exception) {
+            return false
+        }
+    }
 
     /**判断是否为数字*/
-    fun isNumeric(str: Any?): Boolean {
+    fun isNumeric(str: Any?): Boolean {// 1,5
         try {
             if (str == null) return false
             var reg="^([+-]?)\\d*\\.?\\d+$"// number
@@ -38,7 +59,9 @@ private object MathUtils {
     fun ObjectToDouble(o: Any?): Double {
         return try {
             if (o == null)  0.0
-            if (isNumeric(o)) {
+            if (isNumeric_Outside(o)){
+                formatNumber_Outside(o.toString()).toDouble()
+            }else if (isNumeric(o)) {
                 o.toString().toDouble()
             }else{
                 0.0
@@ -51,7 +74,9 @@ private object MathUtils {
     fun ObjectToFloat(o: Any?): Float {
         return try {
             if (o == null)  0f
-            if (isNumeric(o)) {
+            if (isNumeric_Outside(o)){
+                formatNumber_Outside(o.toString()).toFloat()
+            }else if (isNumeric(o)) {
                 o.toString().toFloat()
             }else 0f
         } catch (e: java.lang.Exception) {
@@ -62,7 +87,11 @@ private object MathUtils {
     fun ObjectToInt(o: Any?): Int {
         return try {
             if (o == null)  0
-            if (isNumeric(o)) {
+            if (isNumeric_Outside(o)){
+                var result = formatNumber_Outside(o.toString()).toDouble().toInt()
+                if (result == null) 0
+                else result
+            }else if (isNumeric(o)) {
                 var result = o.toString().toDouble().toInt()
                 if (result == null) 0
                 else result
@@ -75,7 +104,9 @@ private object MathUtils {
     fun ObjectToLong(o: Any?): Long {
         return try {
             if (o == null)  0
-            if (isNumeric(o)) {
+            if (isNumeric_Outside(o)){
+                formatNumber_Outside(o.toString()).toDouble().toLong()
+            }else if (isNumeric(o)) {
                 o.toString().toDouble().toLong()
             }else 0
         } catch (e: java.lang.Exception) {
@@ -92,7 +123,12 @@ private object MathUtils {
      */
     private fun NumberFormat(str: String?, scale: Int): String {
         var s = str
-        if (isNumeric(s)) {
+        if (isNumeric_Outside(s)){
+            val nf = java.text.NumberFormat.getInstance()
+            nf.isGroupingUsed = false
+            nf.maximumFractionDigits = scale
+            return nf.format(ObjectToDouble(s))
+        }else if (isNumeric(s)) {
             val nf = java.text.NumberFormat.getInstance()
             nf.isGroupingUsed = false
             nf.maximumFractionDigits = scale
@@ -176,7 +212,10 @@ private object MathUtils {
     fun BaoliuCleanZero(str: Any?, scale: Int): String {
         var s = str
         s = CleanNull(s)
-        if (isNumeric(s)) {
+        if (isNumeric_Outside(s)) {
+            s = round_Half_Up(formatNumber_Outside(s), scale)
+            s = StringCleanZero(s)
+        }else if (isNumeric(s)) {
             s = round_Half_Up(s, scale)
             s = StringCleanZero(s)
         } else {

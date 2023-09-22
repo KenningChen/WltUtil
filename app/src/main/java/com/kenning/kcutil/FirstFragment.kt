@@ -14,6 +14,8 @@ import com.kenning.kcutil.utils.datepicker.DatePickerBuilder
 import com.kenning.kcutil.utils.datepicker.DatePickerFragment
 import com.kenning.kcutil.utils.datepicker.IPickerListener
 import com.kenning.kcutil.utils.datepicker.PickerControl
+import com.kenning.kcutil.utils.math.CHENG
+import com.kenning.kcutil.utils.math.keepPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -40,12 +42,15 @@ class FirstFragment : BaseBusinessFragment(), IPickerListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            DatePickerBuilder(this).setBeginDate("2023-02-28")
-                .setEndDate("2024-02-29")
-                .setSingle(true)
-                .setRequestCode(111)
-                .setLoaction(PickerControl.ShowLocation.BOTTOM)
-                .start(R.id.fcvMain)
+//            DatePickerBuilder(this).setBeginDate("2023-02-28")
+//                .setEndDate("2024-02-29")
+//                .setSingle(true)
+//                .setRequestCode(111)
+//                .setLoaction(PickerControl.ShowLocation.BOTTOM)
+//                .start(R.id.fcvMain)
+            val a = 11111.23333
+            val b = 2.4
+            Log.e("kenning",a.CHENG(b).CHENG("2,7").keepPoint(3))
         }
     }
 
