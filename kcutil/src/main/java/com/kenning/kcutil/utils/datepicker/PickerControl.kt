@@ -305,24 +305,19 @@ class PickerControl(var fragment: Fragment) {
             kotlin.run {
                 findViewById<NumberPickerView>(R.id.yearonly)?.setOnValueChangedListener { picker, oldVal, newVal ->
                     currentYear = years[newVal]
-                    if (/*isLeayYear(currentYear.toInt_()) && */currentMonth == "2") {
+                    if (/*isLeayYear(currentYear.toInt_()) && */currentMonth.toInt_() == 2) {
                         var oldsize = days.size
                         getDaysArrayOnMonth(currentYear.toInt_(), currentMonth.toInt_())
                         var newsize = days.size
-                        if (newsize != oldsize)/*{
-                            findViewById<NumberPickerView>(R.id.dayonly).displayedValues = days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.dayonly).maxValue = days.size - 1
-                        }else*/ {
-                            try {
-                                findViewById<NumberPickerView>(R.id.dayonly).maxValue =
-                                    days.size - 1
-                                findViewById<NumberPickerView>(R.id.dayonly).displayedValues =
-                                    days.toTypedArray()
-                            } catch (e: Exception) {
-                                findViewById<NumberPickerView>(R.id.dayonly).displayedValues =
-                                    days.toTypedArray()
-                                findViewById<NumberPickerView>(R.id.dayonly).maxValue =
-                                    days.size - 1
+                        if (newsize != oldsize) {
+                            findViewById<NumberPickerView>(R.id.dayonly).apply {
+                                if (displayedValues.size > days.toTypedArray().size){
+                                    maxValue = days.size - 1
+                                    displayedValues = days.toTypedArray()
+                                }else{
+                                    displayedValues = days.toTypedArray()
+                                    maxValue = days.size - 1
+                                }
                             }
                         }
 
@@ -351,18 +346,15 @@ class PickerControl(var fragment: Fragment) {
                     var oldsize = days.size
                     getDaysArrayOnMonth(currentYear.toInt_(), currentMonth.toInt_())
                     var newsize = days.size
-                    if (newsize != oldsize)/*{
-                        findViewById<NumberPickerView>(R.id.dayonly).displayedValues = days.toTypedArray()
-                        findViewById<NumberPickerView>(R.id.dayonly).maxValue = days.size - 1
-                    }else*/ {
-                        try {
-                            findViewById<NumberPickerView>(R.id.dayonly).maxValue = days.size - 1
-                            findViewById<NumberPickerView>(R.id.dayonly).displayedValues =
-                                days.toTypedArray()
-                        } catch (e: Exception) {
-                            findViewById<NumberPickerView>(R.id.dayonly).displayedValues =
-                                days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.dayonly).maxValue = days.size - 1
+                    if (newsize != oldsize){
+                        findViewById<NumberPickerView>(R.id.dayonly).apply {
+                            if (displayedValues.size > days.toTypedArray().size){
+                                maxValue = days.size - 1
+                                displayedValues = days.toTypedArray()
+                            }else{
+                                displayedValues = days.toTypedArray()
+                                maxValue = days.size - 1
+                            }
                         }
                     }
                     if (days.indexOf("${currentDay}日") == -1) {
@@ -411,19 +403,7 @@ class PickerControl(var fragment: Fragment) {
                             currentMonth.toInt_()
                         )
                         var newsize = days.size
-                        if (newsize != oldsize)/*{
-                            findViewById<NumberPickerView>(R.id.day).displayedValues = days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
-                        }else*/ {
-//                            try {
-//                                findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
-//                                findViewById<NumberPickerView>(R.id.day).displayedValues =
-//                                    days.toTypedArray()
-//                            } finally {
-//                                findViewById<NumberPickerView>(R.id.day).displayedValues =
-//                                    days.toTypedArray()
-//                                findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
-//                            }
+                        if (newsize != oldsize){
                             findViewById<NumberPickerView>(R.id.day).apply {
                                 if (displayedValues.size > days.toTypedArray().size){
                                     maxValue = days.size - 1
@@ -459,18 +439,15 @@ class PickerControl(var fragment: Fragment) {
                     days =
                         getDaysArrayOnMonth_EveryTime(currentYear.toInt_(), currentMonth.toInt_())
                     var newsize = days.size
-                    if (newsize != oldsize)/*{
-                        findViewById<NumberPickerView>(R.id.day).displayedValues = days.toTypedArray()
-                        findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
-                    }else*/ {
-                        try {
-                            findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
-                            findViewById<NumberPickerView>(R.id.day).displayedValues =
-                                days.toTypedArray()
-                        } catch (e: Exception) {
-                            findViewById<NumberPickerView>(R.id.day).displayedValues =
-                                days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.day).maxValue = days.size - 1
+                    if (newsize != oldsize){
+                        findViewById<NumberPickerView>(R.id.day).apply {
+                            if (displayedValues.size > days.toTypedArray().size){
+                                maxValue = days.size - 1
+                                displayedValues = days.toTypedArray()
+                            }else{
+                                displayedValues = days.toTypedArray()
+                                maxValue = days.size - 1
+                            }
                         }
                     }
 
@@ -523,11 +500,7 @@ class PickerControl(var fragment: Fragment) {
                             currentMonth_end.toInt_()
                         )
                         var newsize = days.size
-                        if (newsize != oldsize)/*{
-                            findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-                                days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.day_end).maxValue = days.size - 1
-                        }else*/ {
+                        if (newsize != oldsize){
                             findViewById<NumberPickerView>(R.id.day_end).apply {
                                 if (displayedValues.size > days.toTypedArray().size){
                                     maxValue = days.size - 1
@@ -537,18 +510,6 @@ class PickerControl(var fragment: Fragment) {
                                     maxValue = days.size - 1
                                 }
                             }
-//                            if (mDisplayedValues.length)
-//                                findViewById<NumberPickerView>(R.id.day_end).maxValue =
-//                                    days.size - 1
-//                                findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-//                                    days.toTypedArray()
-//                            } finally {
-//                                findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-//                                    days.toTypedArray()
-//                                findViewById<NumberPickerView>(R.id.day_end).maxValue =
-//                                    days.size - 1
-//                            }
-
                         }
                         if (days.indexOf("${currentDay_end}日") == -1) {
                             findViewById<NumberPickerView>(R.id.day_end).value = days.size - 1
@@ -577,19 +538,15 @@ class PickerControl(var fragment: Fragment) {
                         currentMonth_end.toInt_()
                     )
                     var newsize = days.size
-                    if (newsize != oldsize)/*{
-                        findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-                            days.toTypedArray()
-                        findViewById<NumberPickerView>(R.id.day_end).maxValue = days.size - 1
-                    }else*/ {
-                        try {
-                            findViewById<NumberPickerView>(R.id.day_end).maxValue = days.size - 1
-                            findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-                                days.toTypedArray()
-                        } catch (e: Exception) {
-                            findViewById<NumberPickerView>(R.id.day_end).displayedValues =
-                                days.toTypedArray()
-                            findViewById<NumberPickerView>(R.id.day_end).maxValue = days.size - 1
+                    if (newsize != oldsize){
+                        findViewById<NumberPickerView>(R.id.day_end).apply {
+                            if (displayedValues.size > days.toTypedArray().size){
+                                maxValue = days.size - 1
+                                displayedValues = days.toTypedArray()
+                            }else{
+                                displayedValues = days.toTypedArray()
+                                maxValue = days.size - 1
+                            }
                         }
                     }
                     if (days.indexOf("${currentDay_end}日") == -1) {

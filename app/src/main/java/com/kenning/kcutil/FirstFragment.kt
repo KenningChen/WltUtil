@@ -42,7 +42,7 @@ class FirstFragment : BaseBusinessFragment(), IPickerListener {
         binding.buttonFirst.setOnClickListener {
             DatePickerBuilder(this).setBeginDate("2023-02-28")
                 .setEndDate("2024-02-29")
-                .setSingle(false)
+                .setSingle(true)
                 .setRequestCode(111)
                 .setLoaction(PickerControl.ShowLocation.BOTTOM)
                 .start(R.id.fcvMain)
