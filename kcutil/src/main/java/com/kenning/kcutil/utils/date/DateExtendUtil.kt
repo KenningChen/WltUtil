@@ -1,5 +1,6 @@
 package com.kenning.kcutil.utils.date
 
+import android.os.Build
 import com.kenning.kcutil.utils.math.toInt_
 import java.text.SimpleDateFormat
 import java.util.*
@@ -255,7 +256,12 @@ object DateExtendUtil {
     fun getMondayOfWeek(date: Date = Date()): Date {
         val monday = Calendar.getInstance()
         monday.time = date
-        monday.firstDayOfWeek = FIRST_DAY_OF_WEEK
+        if (Build.VERSION.RELEASE.startsWith("4") ||
+            Build.VERSION.RELEASE.startsWith("5")){
+            monday.firstDayOfWeek = Calendar.SUNDAY
+        }else {
+            monday.firstDayOfWeek = FIRST_DAY_OF_WEEK
+        }
         monday[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
         return monday.time
     }
@@ -269,8 +275,15 @@ object DateExtendUtil {
     fun getSundayOfWeek(date: Date = Date()): Date {
         val sunday = Calendar.getInstance()
         sunday.time = date
-        sunday.firstDayOfWeek = FIRST_DAY_OF_WEEK
-        sunday[Calendar.DAY_OF_WEEK] = Calendar.SUNDAY
+        if (Build.VERSION.RELEASE.startsWith("4") ||
+            Build.VERSION.RELEASE.startsWith("5")){
+            sunday.firstDayOfWeek = Calendar.SUNDAY
+            sunday[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
+            return getNextNDay(6,sunday.time).parseBy(Date_Format.YMD)!!
+        }else {
+            sunday.firstDayOfWeek = FIRST_DAY_OF_WEEK
+            sunday[Calendar.DAY_OF_WEEK] = Calendar.SUNDAY
+        }
         return sunday.time
     }
 
@@ -512,6 +525,13 @@ object DateExtendUtil {
         val calendar = Calendar.getInstance() // 得到日历
         calendar.time = Date()
         calendar.add(Calendar.DATE, -29)
+        return format.format(calendar.time)
+    }
+
+    fun getNextNDay(N: Int, date:Date = Date(), format: SimpleDateFormat = Date_Format.YMD): String {
+        val calendar = Calendar.getInstance() // 得到日历
+        calendar.time = date
+        calendar.add(Calendar.DATE, N)
         return format.format(calendar.time)
     }
 //

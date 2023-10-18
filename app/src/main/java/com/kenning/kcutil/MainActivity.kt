@@ -2,6 +2,7 @@ package com.kenning.kcutil
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.Spannable
@@ -87,7 +88,10 @@ class MainActivity : BaseActivity(), IPickerListener {
             确认取消上架该商品吗?
             为避免无法快速找到该商品,取消后请将该商品放回原下架货位
         """.trimIndent()
-                EasyDialog(this@MainActivity).setContentMsg(str,Gravity.CENTER)
+                Log.e("kenning", Build.VERSION.RELEASE)
+                val monday = DateExtendUtil.getMondayOfWeek().formatBy(Date_Format.YMD)
+                val sunday = DateExtendUtil.getSundayOfWeek().formatBy(Date_Format.YMD)
+                EasyDialog(this@MainActivity).setContentMsg("$monday - $sunday",Gravity.CENTER)
                     .build()
             }
         }
