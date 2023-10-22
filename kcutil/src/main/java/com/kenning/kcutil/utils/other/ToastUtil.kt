@@ -1,7 +1,11 @@
 package com.kenning.kcutil.utils.other
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.widget.Toast
 import com.kenning.kcutil.KCUtil
 import java.lang.reflect.Field
@@ -13,12 +17,17 @@ object ToastUtil {
 
     init {
         try {
-            sFieldTN = Toast::class.java.getDeclaredField("mTN")
-            sFieldTN?.isAccessible = true
-            sFieldTNHandler = sFieldTN?.type?.getDeclaredField("mHandler")
-            sFieldTNHandler?.isAccessible = true
+            // android 11 版本以上Toast类重构过， 不再有参数mTN
+            if (Build.VERSION.SDK_INT < 30) {
+                sFieldTN = Toast::class.java.getDeclaredField("mTN")
+                sFieldTN?.isAccessible = true
+                sFieldTNHandler = sFieldTN?.type?.getDeclaredField("mHandler")
+                sFieldTNHandler?.isAccessible = true
+            } else {
+
+            }
         } catch (e: Exception) {
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 
@@ -50,15 +59,26 @@ object ToastUtil {
     fun show(msg: String) {
 //        Toast.makeText(App.instance, msg, Toast.LENGTH_SHORT).show()
         try {
-            if (toast == null) {
-                toast = Toast.makeText(KCUtil.application, msg, Toast.LENGTH_SHORT)
+            if (Build.VERSION.SDK_INT >= 30) {
+                toast?.cancel()
+                toast = Toast(KCUtil.application)
+                toast?.duration = Toast.LENGTH_SHORT
+                toast?.setText(msg)
             } else {
-                toast!!.setText(msg)
+                if (toast == null) {
+                    toast = Toast.makeText(KCUtil.application, msg, Toast.LENGTH_SHORT)
+                } else {
+                    toast!!.setText(msg)
+                }
+                hook(toast!!)
             }
-            hook(toast!!)
-            toast!!.show()
+            toast?.show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun cancelToast() {
+        toast?.cancel()
     }
 }

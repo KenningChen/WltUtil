@@ -175,4 +175,14 @@ public class BackGroundLinearLayout extends LinearLayout {
         setBackground(mNormalBackground);
     }
 
+
+    public void setEachCornerRadius(int topLeftRadius, int topRightRadius, int bottomLeftRadius, int bottomRightRadius) {
+        float[] radius = new float[]{
+                topLeftRadius, topLeftRadius,
+                topRightRadius, topRightRadius,
+                bottomRightRadius, bottomRightRadius,
+                bottomLeftRadius, bottomLeftRadius
+        };
+        mNormalBackground.setCornerRadii(radius);
+    }
 }

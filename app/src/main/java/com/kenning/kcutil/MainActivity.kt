@@ -1,34 +1,30 @@
 package com.kenning.kcutil
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
-import android.view.View
+import android.view.LayoutInflater
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import com.kenning.base.BaseActivity
 import com.kenning.kcutil.databinding.ActivityMainBinding
 import com.kenning.kcutil.utils.date.DateExtendUtil
 import com.kenning.kcutil.utils.date.Date_Format
 import com.kenning.kcutil.utils.date.formatBy
-import com.kenning.kcutil.utils.datepicker.DatePickerBuilder
 import com.kenning.kcutil.utils.datepicker.IPickerListener
-import com.kenning.kcutil.utils.datepicker.PickerControl
-import com.kenning.kcutil.utils.dialog.easydialog.ButtonMode
 import com.kenning.kcutil.utils.dialog.easydialog.EasyDialog
+import com.kenning.kcutil.utils.dialog.fragmentdialog.BaseFragmentDialog
+import com.kenning.kcutil.utils.dialog.fragmentdialog.DialogFragmentButtonMode
 import com.kenning.kcutil.utils.other.PermissionGroup
 import com.kenning.kcutil.utils.other.ToastUtil
 import com.kenning.kcutil.utils.other.setHook
-import com.reduxdemo.ReduxTestAct
+import kotlinx.android.synthetic.main.view_test_dialog.view.view1
+import kotlinx.android.synthetic.main.view_test_dialog.view.view2
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -84,15 +80,38 @@ class MainActivity : BaseActivity(), IPickerListener {
 //
 //                Log.e("kenning", "2")
 //                ToastUtil.show("${index}")
-                val str = """
-            确认取消上架该商品吗?
-            为避免无法快速找到该商品,取消后请将该商品放回原下架货位
-        """.trimIndent()
-                Log.e("kenning", Build.VERSION.RELEASE)
-                val monday = DateExtendUtil.getMondayOfWeek().formatBy(Date_Format.YMD)
-                val sunday = DateExtendUtil.getSundayOfWeek().formatBy(Date_Format.YMD)
-                EasyDialog(this@MainActivity).setContentMsg("$monday - $sunday",Gravity.CENTER)
-                    .build()
+//                val str = """
+//            确认取消上架该商品吗?
+//            为避免无法快速找到该商品,取消后请将该商品放回原下架货位
+//        """.trimIndent()
+//                Log.e("kenning", Build.VERSION.RELEASE)
+//                val monday = DateExtendUtil.getMondayOfWeek().formatBy(Date_Format.YMD)
+//                val sunday = DateExtendUtil.getSundayOfWeek().formatBy(Date_Format.YMD)
+//                EasyDialog(this@MainActivity).setContentMsg("$monday - $sunday", Gravity.CENTER)
+//                    .build()
+
+                val view_body = LayoutInflater.from(this@MainActivity).inflate(
+                    R.layout.view_test_dialog, null
+                )
+                view_body.view1.setOnClickListener { ToastUtil.show("click view1") }
+                view_body.view2.setOnClickListener { ToastUtil.show("click view2") }
+
+
+                val result = BaseFragmentDialog(view_body)
+                    .setTitle("测试")
+                    .setButtonMode(
+                        DialogFragmentButtonMode("hh"),
+                        DialogFragmentButtonMode("YY")
+                    )
+                    .showAsSuspend(
+                        supportFragmentManager,
+                        BaseFragmentDialog::class.java.simpleName
+                    )
+                if (result.toString() == "YY"){
+                    ToastUtil.show("click yy")
+                }else{
+                    ToastUtil.show("click other")
+                }
             }
         }
         binding.tagswitch.setOnSwitchSuspendListener/*({
@@ -102,7 +121,10 @@ class MainActivity : BaseActivity(), IPickerListener {
         }) */{
             ToastUtil.show("成功了")
         }
-        binding.tagswitch.setHook(PermissionGroup.PHONE.name,"没有电话权限,无法执行该功能,请先去设置权限")
+        binding.tagswitch.setHook(
+            PermissionGroup.PHONE.name,
+            "没有电话权限,无法执行该功能,请先去设置权限"
+        )
     }
 
     override fun closeAct() {

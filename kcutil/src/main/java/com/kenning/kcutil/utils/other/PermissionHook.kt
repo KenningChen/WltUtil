@@ -36,7 +36,6 @@ object PermissionHook {
         View.OnClickListener {
         override fun onClick(v: View) {
             if (listener != null) {
-//                hook(v, pgroup)
                 if (mPerssionMap[pgroup] == null || mPerssionMap[pgroup]!!.isEmpty()){
                     listener.onClick(v)
                     return
@@ -48,6 +47,7 @@ object PermissionHook {
                         if (permission.granted) {
                             if (permisionlist[permisionlist.size - 1] == permission.name) {
                                 listener.onClick(v)
+                                Log.e("kkkkkenning", "dasfafadsfasfasfdasf")
                             }
                         } else if (permission.shouldShowRequestPermissionRationale) {
                         } else {
