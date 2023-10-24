@@ -67,6 +67,7 @@ object ToastUtil {
                     toast = Toast.makeText(KCUtil.application, msg, Toast.LENGTH_SHORT)
                 } else {
                     toast!!.setText(msg)
+                    toast!!.duration = Toast.LENGTH_SHORT
                 }
                 hook(toast!!)
             }
