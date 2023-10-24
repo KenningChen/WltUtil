@@ -61,9 +61,7 @@ object ToastUtil {
         try {
             if (Build.VERSION.SDK_INT >= 30) {
                 toast?.cancel()
-                toast = Toast(KCUtil.application)
-                toast?.duration = Toast.LENGTH_SHORT
-                toast?.setText(msg)
+                toast = Toast.makeText(KCUtil.application, msg, Toast.LENGTH_SHORT)
             } else {
                 if (toast == null) {
                     toast = Toast.makeText(KCUtil.application, msg, Toast.LENGTH_SHORT)
