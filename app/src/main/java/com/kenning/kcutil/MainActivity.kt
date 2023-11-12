@@ -23,6 +23,7 @@ import com.kenning.kcutil.utils.dialog.fragmentdialog.DialogFragmentButtonMode
 import com.kenning.kcutil.utils.other.PermissionGroup
 import com.kenning.kcutil.utils.other.ToastUtil
 import com.kenning.kcutil.utils.other.setHook
+import com.kenning.kcutil.utils.tts.TTSUtil
 import kotlinx.android.synthetic.main.view_test_dialog.view.view1
 import kotlinx.android.synthetic.main.view_test_dialog.view.view2
 import kotlinx.coroutines.launch
@@ -49,46 +50,6 @@ class MainActivity : BaseActivity(), IPickerListener {
 
         binding.fab.setOnClickListener { view ->
             lifecycleScope.launch {
-//                val result = EasyDialog(this@MainActivity).setContentMsg("测试")
-//                    .setButtonMode(
-//                        ButtonMode("取消"),
-//                        ButtonMode("按钮1"),
-//                        ButtonMode("确定")
-//                    )
-//                    .buildAsSuspend()
-//
-//                when(result.toString()){
-//                    "取消"->{
-//                        ToastUtil.show("12321")
-//                    }
-//                    "按钮1"->{
-//                        ToastUtil.show("333")
-//                    }
-//                    "确定"->{
-//                        ToastUtil.show("12")
-//                    }
-//                    else -> {
-//                        ToastUtil.show("hhh")
-//                    }
-//                }
-//                var index = 0
-//                val result = EasyDialog(this@MainActivity).setArray(arrayOf("测试", "天才")) {
-//                    index = it
-//                }
-//                    .needNoNButtons(true)
-//                    .buildAsSuspend()
-//
-//                Log.e("kenning", "2")
-//                ToastUtil.show("${index}")
-//                val str = """
-//            确认取消上架该商品吗?
-//            为避免无法快速找到该商品,取消后请将该商品放回原下架货位
-//        """.trimIndent()
-//                Log.e("kenning", Build.VERSION.RELEASE)
-//                val monday = DateExtendUtil.getMondayOfWeek().formatBy(Date_Format.YMD)
-//                val sunday = DateExtendUtil.getSundayOfWeek().formatBy(Date_Format.YMD)
-//                EasyDialog(this@MainActivity).setContentMsg("$monday - $sunday", Gravity.CENTER)
-//                    .build()
 
                 val view_body = LayoutInflater.from(this@MainActivity).inflate(
                     R.layout.view_test_dialog, null
@@ -120,6 +81,8 @@ class MainActivity : BaseActivity(), IPickerListener {
             true
         }) */{
             ToastUtil.show("成功了")
+
+            TTSUtil.getInstance()?.playText("拣货货位A100-1")
         }
         binding.tagswitch.setHook(
             PermissionGroup.PHONE.name,

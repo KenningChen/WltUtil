@@ -1,6 +1,7 @@
 package com.kenning.kcutil
 
 import android.app.Application
+import com.kenning.kcutil.utils.tts.TTSUtil
 
 /**
  *Description :工具类的入口,初始化的地方,在项目application中初始化
@@ -14,5 +15,6 @@ object KCUtil {
 
     fun initKCUtil(application: Application){
         this.application = application
+        TTSUtil.getInstance();
     }
 }
