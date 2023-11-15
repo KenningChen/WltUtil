@@ -138,15 +138,15 @@ class TTSUtil() : UtteranceProgressListener() {
         }
 
         fun checkTTS(activity: Activity){
-            if (!isTargetAPKInstalled(TTSEngineEnum.BDTTS.packageName())) {
-                TTSUtil.showDownLoadWindow(activity)
+            if (!isTargetAPKInstalled(TTSEngineEnum.BDTTS.packageName()) && getInstance()?.isSuccess == false) {
+                showDownLoadWindow(activity)
             }
         }
 
         /**
          * 跳转TTS配置页面
          */
-        fun startConfig(fm: FragmentTransaction, rootViewID: Int) {
+        private fun startConfig(fm: FragmentTransaction, rootViewID: Int) {
             fm.add(
                 rootViewID,
                 TTSConfigFragment(),
