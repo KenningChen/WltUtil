@@ -1,6 +1,10 @@
 package com.kenning.kcutil.utils.other
 
+import android.content.pm.PackageManager
+import android.util.Log
+import androidx.viewbinding.BuildConfig
 import com.kenning.kcutil.KCUtil
+
 
 /**
  *Description :
@@ -36,4 +40,24 @@ fun getAppPackageName():String{
         }
     }
     return PackageName
+}
+
+/**
+ * apk是否已安装
+ * @param packageName 包名
+ * @return Boolean
+ */
+fun isTargetAPKInstalled(packageName: String): Boolean{
+    try {
+        val pm = KCUtil.application!!.packageManager
+
+        pm.getPackageInfo(packageName, 0)
+
+        return true
+    }catch (e:Exception){
+        if (BuildConfig.DEBUG) {
+            Log.e("kkkkkk", "语音引擎是否安装 $e")
+        }
+    }
+    return false
 }
