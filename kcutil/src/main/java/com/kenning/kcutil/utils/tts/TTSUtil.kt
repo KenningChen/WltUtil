@@ -38,13 +38,14 @@ class TTSUtil() : UtteranceProgressListener() {
 
     constructor(context: Context) : this() {
         mContext = KCUtil.application
+        var isInStallBaiduAPk = isTargetAPKInstalled(TTSEngineEnum.BDTTS.packageName())
         isSuccess = true
         textToSpeech = TextToSpeech(mContext, { i: Int ->
             //系统语音初始化成功
             if (i == TextToSpeech.SUCCESS) {
                 val result = textToSpeech!!.setLanguage(Locale.CHINA)
                 textToSpeech!!.setPitch(1.0f) // 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
-                textToSpeech!!.setSpeechRate(4.0f) // 播报速度
+                textToSpeech!!.setSpeechRate(if (isInStallBaiduAPk) 4.0f else 1.8f) // 播报速度
                 textToSpeech!!.setOnUtteranceProgressListener(this@TTSUtil)
 
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {

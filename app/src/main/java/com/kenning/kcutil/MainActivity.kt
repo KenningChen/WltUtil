@@ -49,7 +49,7 @@ class MainActivity : BaseActivity(), IPickerListener {
         loadRootFragment(binding.fcvMain.id, FirstFragment())
 
         binding.fab.setOnClickListener { view ->
-            TTSUtil.getInstance()?.playText("128")
+            TTSUtil.getInstance()?.playText("拣货完成")
 //            lifecycleScope.launch {
 //
 //                val view_body = LayoutInflater.from(this@MainActivity).inflate(
