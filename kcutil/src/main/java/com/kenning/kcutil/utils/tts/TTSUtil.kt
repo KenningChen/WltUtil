@@ -44,7 +44,7 @@ class TTSUtil() : UtteranceProgressListener() {
             if (i == TextToSpeech.SUCCESS) {
                 val result = textToSpeech!!.setLanguage(Locale.CHINA)
                 textToSpeech!!.setPitch(1.0f) // 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
-                textToSpeech!!.setSpeechRate(1.5f) // 播报速度
+                textToSpeech!!.setSpeechRate(4.0f) // 播报速度
                 textToSpeech!!.setOnUtteranceProgressListener(this@TTSUtil)
 
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -237,7 +237,7 @@ class TTSUtil() : UtteranceProgressListener() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val uriForFile = FileProvider.getUriForFile(
                     KCUtil.application!!,
-                    /*KCUtil.application!!.packageName +*/ "myutil.provider",
+                    KCUtil.application!!.packageName +".provider",
                     apkFile
                 )
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

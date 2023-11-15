@@ -12,13 +12,6 @@
     </queries>
 
 
-    <application>
-        <provider android:name="androidx.core.content.FileProvider" android:grantUriPermissions="true" android:exported="false"
-            android:authorities="myutil.provider">
-
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
-
-        </provider>
-    </application>
+    <application/>
 
 </manifest>
