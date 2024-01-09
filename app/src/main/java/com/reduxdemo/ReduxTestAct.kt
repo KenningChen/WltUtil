@@ -38,8 +38,8 @@ class ReduxTestAct : AppCompatActivity(),
     }
 
     override fun invalidate(state: DemoState) {
-        mBinding.tv2.text = state.text
-        mBinding.tv3.text = state.text2
+//        mBinding.tv2.text = state.text
+//        mBinding.tv3.text = state.text2
 
     }
 }
