@@ -9,7 +9,7 @@ import com.kenning.kcutil.databinding.ActDemoBinding
 import java.util.*
 
 /**
- *Description :
+ *Description :测试三方库
  *
  *Date : 2022/9/29
  *@author : KenningChen
